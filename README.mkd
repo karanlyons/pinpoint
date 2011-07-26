@@ -1,0 +1,33 @@
+# CSSFrag
+**Target anything.**
+
+## Usage
+After installing CSSFrag (download and double click on the .safariextz file), Safari will automatically take you to the part of the page the link points to (just like a normal anchor link).
+
+To create your own CSSFrag links, simply right click on any element on the page, and select "Generate Fragment Link" from the menu.
+
+Don't worry, users who don't have CSSFrag installed will still be able to use your links; they'll just be pointed to the full page instead of the specific part you linked to.
+
+## Settings
+#### Prefer Standard Hashes
+When checked, CSSFrag will generate standard fragment identifiers when the element has a unique ID. These links work with or without CSSFrag.
+
+### Highlighting
+#### Highlighting Targets
+Allows you to choose which targets you wish to be highlighted. By default, CSSFrag will only highlight targets identified by CSSFrag links. You can instead have all identified targets highlighted, or none at all.
+
+#### Highlight Color
+Allows you to set the color you'd like to use to highlight an identified target.
+
+## Not Using Safari?
+Check out the CSSFrag plugins for [Chrome](https://github.com/cheeaun/CSSFrag/) and [Firefox](https://github.com/Laurian/CSSFrag).
+
+## To Do
+* Cleanup code
+* Improve fragment creation logic
+* Add URL shortener support
+* Experiment with CSSFrag hashes on top of website hashes (support for the terrible hash bang)
+* Reword this readme
+
+## Credit Where It's Due
+CSSFrag is built on top of the fantastic work on the original Safari extension by [Shaun Inman](http://shauninman.com/archive/2011/07/25/cssfrag), and the proposal for [CSS selectors as fragment identifiers](http://simonstl.com/articles/cssFragID.html) by [Simon St.Laurent](http://simonstl.com/) and [Eric Meyer](http://meyerweb.com/).
