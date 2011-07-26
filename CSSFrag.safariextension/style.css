@@ -16,26 +16,32 @@
 	display: block;
 	position: absolute;
 	height: 80px;
-	width: 870px;
+	width: 62%;
 	top: 50%;
 	left: 50%;
-	margin-top: -60px;
-	margin-left: -450px;
+	margin-top: -40px;
+	margin-left: -31%;
 	opacity: 0;
 	background-color: #ebebeb;
-	border-radius: 15px;
+	border-radius: 10px;
 	box-shadow: 0px 0px 0px 10px rgba(25, 25, 25, 0.5), 0px 0px 10px 10px rgba(25, 25, 25, .25);
 	-webkit-transform: scale(0);
 	-webkit-transition-timing-function: ease-out;
 	-webkit-transition-duration: 0.5s;
 }
 
+#CSSFragLinkPadding {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
 input#CSSFragLinkInput {
 	display: block;
 	height: 50px;
-	width: 840px;
+	width: 100%;
 	background-color: #d1d1d1;
 	margin: 15px auto;
+	padding: 0;
 	border: none;
 	font-size: 30px;
 	text-align: center;

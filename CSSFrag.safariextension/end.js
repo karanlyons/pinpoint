@@ -197,17 +197,17 @@ function handleLoadAndHashChange() {
 
 function showURLinWindow(URL) {
 	if (document.getElementById('CSSFragLinkWrapper') === null) {
-		document.body.innerHTML += '<div id="CSSFragLinkWrapper"><div id="CSSFragLinkContainer"><input id="CSSFragLinkInput" name="CSSFragLinkInput" value="" autofocus></div></div>';
+		document.body.innerHTML += '<div id="CSSFragLinkWrapper"><div id="CSSFragLinkContainer"><div id="CSSFragLinkPadding"><input id="CSSFragLinkInput" name="CSSFragLinkInput" value="" autofocus></div></div></div>';
+		document.getElementById('CSSFragLinkWrapper').addEventListener('click', hideURLinWindow, false);
+		document.addEventListener('copy', hideURLinWindow, false);
 	}
 	document.getElementById('CSSFragLinkInput').value = URL;
 	document.getElementById('CSSFragLinkWrapper').style.display = "block";
-	document.getElementById('CSSFragLinkWrapper').className = "active";
+	setTimeout(function(){document.getElementById('CSSFragLinkWrapper').className = "active";}, 0);
 	document.getElementById('CSSFragLinkInput').select();
-	document.getElementById('CSSFragLinkWrapper').addEventListener('click', hideURLinWindow, false);
-	document.addEventListener('copy', hideURLinWindow, false);
 }
 
 function hideURLinWindow(event) {
 	document.getElementById('CSSFragLinkWrapper').className = "";
-	setTimeout(function(){document.getElementById('CSSFragLinkWrapper').style.display = "none";}, 500);
+	setTimeout(function(){document.getElementById('CSSFragLinkWrapper').style.display = "none";}, 600);
 }
