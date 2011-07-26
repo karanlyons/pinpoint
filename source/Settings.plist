@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>DefaultValue</key>
+		<true/>
+		<key>Key</key>
+		<string>preferStandardHashes</string>
+		<key>Title</key>
+		<string>Prefer Standard Hashes</string>
+		<key>Type</key>
+		<string>CheckBox</string>
+	</dict>
+	<dict>
+		<key>Title</key>
+		<string>Highlighting</string>
+		<key>Type</key>
+		<string>Group</string>
+	</dict>
+	<dict>
+		<key>DefaultValue</key>
+		<string>frag</string>
+		<key>Key</key>
+		<string>highlightTarget</string>
+		<key>Title</key>
+		<string>Highlighting Targets</string>
+		<key>Titles</key>
+		<array>
+			<string>Highlight All Targets</string>
+			<string>Highlight CSSFrag Targets</string>
+			<string>Don't Highlight Targets</string>
+		</array>
+		<key>Type</key>
+		<string>PopUpButton</string>
+		<key>Values</key>
+		<array>
+			<string>all</string>
+			<string>frag</string>
+			<string>none</string>
+		</array>
+	</dict>
+	<dict>
+		<key>DefaultValue</key>
+		<string>#FFFF9C</string>
+		<key>Key</key>
+		<string>highlightColor</string>
+		<key>Title</key>
+		<string>Highlight Color</string>
+		<key>Type</key>
+		<string>TextField</string>
+	</dict>
+</array>
+</plist>
