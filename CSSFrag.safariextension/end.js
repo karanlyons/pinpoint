@@ -197,65 +197,7 @@ function handleLoadAndHashChange() {
 
 function showURLinWindow(URL) {
 	if (document.getElementById('CSSFragLinkWrapper') === null) {
-		document.body.innerHTML += '\n\
-		<style type="text/css">\n\
-			html, body {\n\
-				height: 100%;\n\
-				width: 100%;\n\
-				margin: 0;\n\
-				padding: 0;\n\
-			}\n\
-			#CSSFragLinkWrapper {\n\
-				display: block;\n\
-				position: fixed;\n\
-				top: 0;\n\
-				left: 0;\n\
-				height: 100%;\n\
-				width: 100%;\n\
-				box-shadow: inset 0px 0px 500px 20px rgba(0,0,0,0.5);\n\
-				background-color: rgba(0,0,0,0.25);\n\
-				opacity: 0;\n\
-				-webkit-transition: opacity 0.3s ease-out;\n\
-				z-index: 99999999;\n\
-			}\n\
-			#CSSFragLinkWrapper.active { opacity: 1; }\n\
-			#CSSFragLinkContainer {\n\
-				display: block;\n\
-				position: absolute;\n\
-				top: 50%;\n\
-				left: 50%;\n\
-				height: 80px;\n\
-				width: 870px;\n\
-				margin-top: -60px;\n\
-				margin-left: -450px;\n\
-				border-radius: 15px;\n\
-				background-color: #ebebeb;\n\
-				box-shadow: 0px 0px 0px 10px rgba(25, 25, 25, 0.5), 0px 0px 10px 10px rgba(25, 25, 25, .25);\n\
-				opacity: 0;\n\
-				-webkit-transform: scale(0);\n\
-				-webkit-transition-timing-function: ease-out;\n\
-				-webkit-transition-duration: 0.5s;\n\
-			}\n\
-			#CSSFragLinkWrapper.active > #CSSFragLinkContainer { -webkit-transform: scale(1); opacity: 1; }\n\
-			input#CSSFragLinkInput {\n\
-				display: block;\n\
-				height: 50px;\n\
-				width: 840px;\n\
-				border: none;\n\
-				font-size: 30px;\n\
-				text-align: center;\n\
-				margin: 15px auto;\n\
-				background-color: #d1d1d1;\n\
-			}\n\
-			input:focus {\n\
-				outline: none;\n\
-			}\n\
-		</style>\n\
-		<div id="CSSFragLinkWrapper">\n\
-			<div id="CSSFragLinkContainer">\n\
-				<input id="CSSFragLinkInput" name="CSSFragLinkInput" value="" autofocus>\n\
-			</div>\n\
-		</div>';
+		document.body.innerHTML += '<div id="CSSFragLinkWrapper"><div id="CSSFragLinkContainer"><input id="CSSFragLinkInput" name="CSSFragLinkInput" value="" autofocus></div></div>';
 	}
 	document.getElementById('CSSFragLinkInput').value = URL;
 	document.getElementById('CSSFragLinkWrapper').style.display = "block";
