@@ -73,7 +73,7 @@ function colorToRGBADictionary(color) {
 	}
 	else if (color.substring(0, 3) === 'rgb') {
 		var rgba = color.match(/([^a-z\(\), ]+)/g);
-		if (rgba.length <= 3) { return false; } // This check isn't perfect (it should freak out over stuff like rgba(0,a,1,1)), but it's good enough.
+		if (rgba.length < 3) { return false; }
 		return {'r': rgba[0], 'g': rgba[1], 'b': rgba[2], 'a': (rgba[3] || 1)};
 	}
 	else { return false; }
