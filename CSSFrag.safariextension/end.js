@@ -207,7 +207,7 @@ function showURLinWindow(URL) {
 }
 
 function hideURLinWindow(event) {
-	if (event.target.getAttribute('id') === 'CSSFragLinkWrapper') {
+	if (event.type === 'copy' || event.target.getAttribute('id') === 'CSSFragLinkWrapper') {
 		document.getElementById('CSSFragLinkWrapper').className = "";
 		setTimeout(function(){document.getElementById('CSSFragLinkWrapper').style.display = "none";}, 600);		
 	}
