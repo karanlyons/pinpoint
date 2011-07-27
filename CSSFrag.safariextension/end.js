@@ -1,5 +1,16 @@
 // HELPER FUNCTIONS
 
+function dictionaryToSelector(dictionary) {
+	//
+	// Returns a dictionary's values as a concatenated string, removing the last character if it's ">".
+	//
+	var string = "";
+	for (var key in dictionary) { string += dictionary[key]; }
+	
+	if (string[string.length - 1] === ">") { return string.substring(0, string.length - 1); }
+	return string;
+}
+
 function offsetXY(element) {
 	//
 	// Returns the x and y coordinates of the closest positioned element as integers.
@@ -31,24 +42,19 @@ function nthIndex(element) {
 	return count;
 }
 
-function singleElementWithID(id) {
+function singleElementWithSelector(selector) {
 	//
-	// Returns true if the ID has only one corresponding element (as *should* always be the case).
+	// Returns true if the selector has only one corresponding element.
 	//
 	
-	var element = document.getElementById(id);
-	var elements = [];
-	
-	while(element) {
-		elements.push(element);
-		element.id = id + "_CSSFrag";
-		element = document.getElementById(id);
-	}
+	return (document.querySelectorAll(selector).length === 1);
+}
 
-	for(var i = 0; i < elements.length; i++) {
-		elements[i].id = id;
-	}
-	return (elements.length == 1);
+function firstElementWithSelector(selector, element) {
+	//
+	// Returns true if the first element returned by the selector is the same as the given element.
+	//
+	return (document.querySelector(selector) === element);
 }
 
 function colorToRGBADictionary(color) {
@@ -158,30 +164,84 @@ function handleMessage(event) {
 		
 		var href = window.location.href.split("#")[0].toLowerCase();
 		var currentNode = eventTarget;
-		var selector = "";
-		var selectorBuilt = false;
+		var currentNodeAttribute = currentNode.getAttribute('id');
+		var oldSelector = "";
 		
-		do {
-			var nodeName = currentNode.nodeName.toLowerCase()
-			if (nodeName === 'body' || nodeName === 'head' || nodeName === 'html' || nodeName === '#document') { break; }
-			
-			if (!selectorBuilt) {
-				var newSelector = nodeName;
-				if (currentNode.getAttribute('id') !== null && currentNode.getAttribute('id') !== '' && singleElementWithID(currentNode.getAttribute('id'))) { newSelector += "#" + currentNode.getAttribute('id'); }
-				if (currentNode.getAttribute('class') !== null && currentNode.getAttribute('class') !== '') { newSelector += "." + currentNode.getAttribute('class'); }
-				
-				var index = nthIndex(currentNode);
-				if (index > 1) { newSelector += ":nth-child(" + index + ")"; }
-			
-				selector = newSelector + ">" + selector;
-				if (document.querySelectorAll(selector.substring(0, selector.length - 1)).length == 1) { selectorBuilt = true; }
-			}
-		} while (currentNode = currentNode.parentNode);
-		if (singleElementWithID(eventTarget.id)) {
-			if (settings.preferStandardHashes) { URL = href + "#" + eventTarget.id + ""; }
-			else { URL = href + "#css(%23" + eventTarget.id + ")"; }
+		if (singleElementWithSelector(currentNodeAttribute)) { // If this element has a unique ID, we're done here.
+			if (settings.preferStandardHashes) { URL = href + "#" + currentNodeAttribute; }
+			else { URL = href + "#css(%23" + currentNodeAttribute + ")"; }
 		}
-		else { URL = href + "#css(" + encodeURIComponent(selector.substring(0, selector.length - 1)) + ")" }
+		else {
+			do {
+				var nodeName = currentNode.nodeName.toLowerCase()
+				if (nodeName === 'body' || nodeName === 'head' || nodeName === 'html' || nodeName === '#document') { break; }
+				var currentNodeAttribute = "";
+				
+				var selector = { // Ordered by their position in the CSS selector.
+					'name': nodeName,
+					'href': "",
+					'title': "",
+					'type': "",
+					'rel': "",
+					'action': "",
+					'for': "",
+					'value': "",
+					'rows': "",
+					'id': "",
+					'class': "",
+					'nthChild': "",
+					'oldSelector': ">" + oldSelector,
+				}
+				
+				var attributes = [ // Ordered by uniqueness. We could do a uniqueness check on the nodeName itself, but that seems *extremely* volatile.
+					'href',
+					'src',
+					'title',
+					'type',
+					'name',
+					'for',
+					'value',
+					'action',
+					'rows',
+					'rel',
+				]
+				
+				// ID
+				currentNodeAttribute = currentNode.getAttribute('id');
+				if (currentNodeAttribute !== null && currentNodeAttribute !== '') {
+					selector.id = "#" + currentNodeAttribute; // We could fold this into the for loop and do [id='foobar'] instead, but that's...uglier.
+					if (firstElementWithSelector(dictionaryToSelector(selector), eventTarget)) { break; }
+				}
+				
+				// Class
+				currentNodeAttribute = currentNode.getAttribute('class');
+				if (currentNodeAttribute !== null && currentNodeAttribute !== '') {
+					selector.class = "." + currentNodeAttribute;
+					if (firstElementWithSelector(dictionaryToSelector(selector), eventTarget)) { break; }
+				}
+				
+				// All other attributes
+				for (var i in attributes) {
+					currentNodeAttribute = currentNode.getAttribute(attributes[i]);
+					if (currentNodeAttribute !== null) {
+						selector[attributes[i]] = "[" + attributes[i] + "='" + currentNodeAttribute + "']";
+						if (firstElementWithSelector(dictionaryToSelector(selector), eventTarget)) { break; }
+					}
+				}
+				
+				if (firstElementWithSelector(dictionaryToSelector(selector), eventTarget)) { break; }
+				
+				// :nth-child (We don't break on uniqueness here, because :nth-child is really volatile, and a last resort.)
+				var currentNodePosition = nthIndex(currentNode);
+				if (currentNodePosition > 1) { // To my knowledge, we can't fold this into the for loop as we're running a different check.
+					selector.nthChild = ":nth-child(" + currentNodePosition + ")";
+				}
+				
+				oldSelector = dictionaryToSelector(selector);
+			} while (currentNode = currentNode.parentNode);
+			
+			URL = href + "#css(" + encodeURIComponent(dictionaryToSelector(selector)) + ")"
+		}
 		
 		showURLinWindow(URL);
 	}
