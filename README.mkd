@@ -25,6 +25,7 @@ Check out the CSSFrag plugins for [Chrome](https://github.com/cheeaun/CSSFrag/) 
 ## To Do
 * Cleanup code
 * Improve fragment creation logic
+* Improve target highlighting
 * Add URL shortener support
 * Experiment with CSSFrag hashes on top of website hashes (support for the terrible hash bang)
 * Reword this readme

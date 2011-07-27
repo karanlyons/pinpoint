@@ -20,7 +20,6 @@ function nthIndex(element) {
 	// Returns the element's DOM position amongst its children as an integer.
 	//
 	
-
 	var nodes = element.parentNode.childNodes, node;
 	var i = 0;
 	var count = 1;
@@ -208,6 +207,8 @@ function showURLinWindow(URL) {
 }
 
 function hideURLinWindow(event) {
-	document.getElementById('CSSFragLinkWrapper').className = "";
-	setTimeout(function(){document.getElementById('CSSFragLinkWrapper').style.display = "none";}, 600);
+	if (event.target.getAttribute('id') === 'CSSFragLinkWrapper') {
+		document.getElementById('CSSFragLinkWrapper').className = "";
+		setTimeout(function(){document.getElementById('CSSFragLinkWrapper').style.display = "none";}, 600);		
+	}
 }
