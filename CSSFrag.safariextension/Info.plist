@@ -30,10 +30,6 @@
 				<string>end.js</string>
 			</array>
 		</dict>
-		<key>Stylesheets</key>
-		<array>
-			<string>style.css</string>
-		</array>
 	</dict>
 	<key>Description</key>
 	<string>CSSFrag is a Safari extension allowing users to share links to any part of a webpage.</string>

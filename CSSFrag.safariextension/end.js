@@ -258,7 +258,7 @@ function handleLoadAndHashChange() {
 
 function showURLinWindow() {
 	if (document.getElementById('CSSFragLinkWrapper') === null) {
-		document.body.innerHTML += '<div id="CSSFragLinkWrapper"><div id="CSSFragLinkContainer"><div id="CSSFragLinkPadding"><input id="CSSFragLinkInput" name="CSSFragLinkInput" value="" autofocus></div></div></div>';
+		document.body.innerHTML += '<link rel="stylesheet" type="text/css" href="' + safari.extension.baseURI + 'style.css" /><div id="CSSFragLinkWrapper"><div id="CSSFragLinkContainer"><div id="CSSFragLinkPadding"><input id="CSSFragLinkInput" name="CSSFragLinkInput" value="" autofocus></div></div></div>';
 		
 		document.getElementById('CSSFragLinkInput').addEventListener('keyup', function(event){ event.target.value = URL; event.target.select(); }, false);
 		

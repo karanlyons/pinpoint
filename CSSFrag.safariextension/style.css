@@ -1,54 +1,54 @@
 #CSSFragLinkWrapper {
-	display: block !important;
-	position: fixed !important;
-	z-index: 99999999 !important;
-	height: 100% !important;
-	width: 100% !important;
-	top: 0 !important;
-	left: 0 !important;
-	opacity: 0 !important;
-	background-color: rgba(0,0,0,0.25) !important;
-	box-shadow: inset 0px 0px 500px 20px rgba(0,0,0,0.5) !important;
-	-webkit-transition: opacity 0.3s ease-out !important;
+	display: block;
+	position: fixed;
+	z-index: 99999999;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	left: 0;
+	opacity: 0;
+	background-color: rgba(0,0,0,0.25);
+	box-shadow: inset 0px 0px 500px 20px rgba(0,0,0,0.5);
+	-webkit-transition: opacity 0.3s ease-out;
 }
 
 #CSSFragLinkContainer {
-	display: block !important;
-	position: absolute !important;
-	height: 80px !important;
-	width: 62% !important;
-	top: 50% !important;
-	left: 50% !important;
-	margin-top: -40px !important;
-	margin-left: -31% !important;
-	opacity: 0 !important;
-	background-color: #ebebeb !important;
-	border-radius: 10px !important;
-	box-shadow: 0px 0px 0px 10px rgba(25, 25, 25, 0.5), 0px 0px 10px 10px rgba(25, 25, 25, .25) !important;
-	-webkit-transform: scale(0) !important;
-	-webkit-transition-timing-function: ease-out !important;
-	-webkit-transition-duration: 0.5s !important;
+	display: block;
+	position: absolute;
+	height: 80px;
+	width: 62%;
+	top: 50%;
+	left: 50%;
+	margin-top: -40px;
+	margin-left: -31%;
+	opacity: 0;
+	background-color: #ebebeb;
+	border-radius: 10px;
+	box-shadow: 0px 0px 0px 10px rgba(25, 25, 25, 0.5), 0px 0px 10px 10px rgba(25, 25, 25, .25);
+	-webkit-transform: scale(0);
+	-webkit-transition-timing-function: ease-out;
+	-webkit-transition-duration: 0.5s;
 }
 
 #CSSFragLinkPadding {
-	padding-left: 15px !important;
-	padding-right: 15px !important;
+	padding-left: 15px;
+	padding-right: 15px;
 }
 
 input#CSSFragLinkInput {
-	display: block !important;
-	height: 50px !important;
-	width: 100% !important;
-	background-color: #d1d1d1 !important;
-	margin: 15px auto !important;
-	padding: 0 !important;
-	border: none !important;
-	font-size: 30px !important;
-	text-align: center !important;
+	display: block;
+	height: 50px;
+	width: 100%;
+	background-color: #d1d1d1;
+	margin: 15px auto;
+	padding: 0;
+	border: none;
+	font-size: 30px;
+	text-align: center;
 }
 
-input#CSSFragLinkInput:focus { outline: none !important; }
+input#CSSFragLinkInput:focus { outline: none; }
 
-#CSSFragLinkWrapper.active { opacity: 1 !important; }
-#CSSFragLinkWrapper.hidden { height: 0px !important; width: 0px !important; }
-#CSSFragLinkWrapper.active > #CSSFragLinkContainer { -webkit-transform: scale(1) !important; opacity: 1 !important; }
+#CSSFragLinkWrapper.active { opacity: 1; }
+#CSSFragLinkWrapper.hidden { height: 0px; width: 0px; }
+#CSSFragLinkWrapper.active > #CSSFragLinkContainer { -webkit-transform: scale(1); opacity: 1; }
