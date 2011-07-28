@@ -136,6 +136,8 @@ function scrollFocusAndHighlight(selector, isFragHash) {
 
 // CSSFrag
 
+var URL = "";
+
 function handleContextMenu(event) {
 	//
 	// Sets display to true only if the event target is something discrete.
@@ -243,7 +245,7 @@ function handleMessage(event) {
 			URL = href + "#css(" + encodeURIComponent(dictionaryToSelector(selector)) + ")"
 		}
 		
-		showURLinWindow(URL);
+		showURLinWindow();
 	}
 } safari.self.addEventListener('message', handleMessage, false);
 
@@ -254,11 +256,15 @@ function handleLoadAndHashChange() {
 	else if (settings.highlightTarget === 'all' && window.location.hash !== '') { scrollFocusAndHighlight(window.location.hash, false); }
 } window.addEventListener('load', handleLoadAndHashChange, false); window.addEventListener('hashchange', handleLoadAndHashChange, false);
 
-function showURLinWindow(URL) {
+function showURLinWindow() {
 	if (document.getElementById('CSSFragLinkWrapper') === null) {
 		document.body.innerHTML += '<div id="CSSFragLinkWrapper"><div id="CSSFragLinkContainer"><div id="CSSFragLinkPadding"><input id="CSSFragLinkInput" name="CSSFragLinkInput" value="" autofocus></div></div></div>';
+		
+		document.getElementById('CSSFragLinkInput').addEventListener('keyup', function(event){ event.target.value = URL; event.target.select(); }, false);
+		
 		document.getElementById('CSSFragLinkWrapper').addEventListener('click', hideURLinWindow, false);
 		document.addEventListener('copy', hideURLinWindow, false);
+		document.addEventListener('cut', hideURLinWindow, false);
 	}
 	document.getElementById('CSSFragLinkInput').value = URL;
 	document.getElementById('CSSFragLinkWrapper').style.display = "block";
@@ -267,7 +273,7 @@ function showURLinWindow(URL) {
 }
 
 function hideURLinWindow(event) {
-	if (event.type === 'copy' || event.target.getAttribute('id') === 'CSSFragLinkWrapper') {
+	if (event.type === 'copy' || event.type === 'cut' || event.target.getAttribute('id') === 'CSSFragLinkWrapper') {
 		document.getElementById('CSSFragLinkWrapper').className = "";
 		setTimeout(function(){document.getElementById('CSSFragLinkWrapper').style.display = "none";}, 600);		
 	}
