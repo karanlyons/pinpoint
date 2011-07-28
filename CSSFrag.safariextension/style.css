@@ -50,4 +50,5 @@ input#CSSFragLinkInput {
 input#CSSFragLinkInput:focus { outline: none !important; }
 
 #CSSFragLinkWrapper.active { opacity: 1 !important; }
+#CSSFragLinkWrapper.hidden { height: 0px !important; width: 0px !important; }
 #CSSFragLinkWrapper.active > #CSSFragLinkContainer { -webkit-transform: scale(1) !important; opacity: 1 !important; }

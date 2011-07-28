@@ -267,7 +267,9 @@ function showURLinWindow() {
 		document.addEventListener('cut', hideURLinWindow, false);
 	}
 	document.getElementById('CSSFragLinkInput').value = URL;
+	
 	document.getElementById('CSSFragLinkWrapper').style.display = "block";
+	document.getElementById('CSSFragLinkWrapper').className = "";
 	setTimeout(function(){document.getElementById('CSSFragLinkWrapper').className = "active";}, 0);
 	document.getElementById('CSSFragLinkInput').select();
 }
@@ -275,6 +277,9 @@ function showURLinWindow() {
 function hideURLinWindow(event) {
 	if (event.type === 'copy' || event.type === 'cut' || event.target.getAttribute('id') === 'CSSFragLinkWrapper') {
 		document.getElementById('CSSFragLinkWrapper').className = "";
-		setTimeout(function(){document.getElementById('CSSFragLinkWrapper').style.display = "none";}, 600);		
+		setTimeout(function(){
+			document.getElementById('CSSFragLinkWrapper').style.display = "none";
+			document.getElementById('CSSFragLinkWrapper').className = "hidden";
+		}, 600);
 	}
 }
