@@ -11,7 +11,7 @@ function dictionaryToSelector(dictionary) {
 	return string;
 }
 
-function offsetXY(element) {
+function offsetCoordinates(element) {
 	//
 	// Returns the x and y coordinates of the closest positioned element as integers.
 	//
@@ -19,8 +19,8 @@ function offsetXY(element) {
 	var x = y = 0;
 	if (element.offsetParent) {
 		do {
-			x += element.offsetLeft;
-			y += element.offsetTop;
+			x += element.offsetLeft + element.style.marginLeft;
+			y += element.offsetTop + element.style.marginTop;
 		} while (element = element.offsetParent);
 	}
 	return {'x': x,'y': y};
@@ -124,7 +124,7 @@ function scrollFocusAndHighlight(selector, isFragHash) {
 	//
 	var element = document.querySelector(selector);
 	if (element === null) { return false; }
-	var offset = offsetXY(element);
+	var offset = offsetCoordinates(element);
 	
 	window.scrollTo(offset.x, offset.y);
 	element.focus();
