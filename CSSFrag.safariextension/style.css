@@ -68,6 +68,8 @@ input#CSSFragLinkInput:focus { outline: none; }
 	-webkit-animation-duration: 1.6s;
 }
 
+#CSSFragHighlightBackground .image { padding: 4px 0px 0px !important; }
+
 @-webkit-keyframes highlight {
 	0% {
 		-webkit-transform: scale(0);

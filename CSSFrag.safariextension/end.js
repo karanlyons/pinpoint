@@ -90,8 +90,9 @@ function scrollFocusAndHighlight(selector, isFragHash) {
 		window.scrollTo((bounds.left + (bounds.width / 2) - (window.innerWidth / 2)), (bounds.top + (bounds.height / 2) - (window.innerHeight / 2)));
 		
 		var highlight = element.cloneNode(true);
+		var isImage = (highlight.nodeName.toLowerCase() === 'img');
 		highlight.style.cssText = getComputedStyle(element, null).cssText;
-		highlight.className = "";
+		highlight.className = isImage? "image" : "";
 		highlight.id = "CSSFragHighlight";
 		
 		highlight.style.height = getComputedStyle(element, null).height + " !important";
@@ -100,7 +101,7 @@ function scrollFocusAndHighlight(selector, isFragHash) {
 		document.body.innerHTML += "<div id=\"CSSFragHighlightBackground\"></div>";
 		var highlightBackground = document.getElementById('CSSFragHighlightBackground');
 		highlightBackground.style.left = bounds.left - 5 + "px"; // Subtract 1px for the border, 4px for the padding.
-		highlightBackground.style.top = bounds.top - 1 + "px"; // Subtract 1px for the border.
+		highlightBackground.style.top = bounds.top - 1 - (isImage? 4 : 0) + "px"; // Subtract 1px for the border, 4px for the padding if this is an image.
 		highlightBackground.appendChild(highlight);
 		setTimeout(function(){document.body.removeChild(document.getElementById('CSSFragHighlightBackground'));}, 1600);
 		
