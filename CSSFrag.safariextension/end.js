@@ -42,6 +42,27 @@ function firstElementWithSelector(selector, element) {
 	return (document.querySelector(selector) === element);
 }
 
+function fixImageDimensionsRelatedToElement(element) {
+	//
+	// Given an element, walks up the tree from it, repairing any img nodes' height and width attributes if they weren't properly set.
+	//
+	
+	var currentNode = element.parentNode;
+	var imageDimensions = undefined;
+	
+	do {
+		var children = currentNode.childNodes;
+		for (child in children) {
+			if (children[child].nodeType !== undefined && children[child].nodeName.toLowerCase() === 'img' && parseInt(getComputedStyle(children[child], null).height) === 0 && parseInt(getComputedStyle(children[child], null).width) === 0) {
+				imageDimensions = new Image();
+				imageDimensions.src = children[child].src;
+				children[child].style.height = imageDimensions.height + "px !important";
+				children[child].style.width = imageDimensions.width + "px !important";
+			}
+		}
+	} while (currentNode = currentNode.parentNode);
+}
+
 function scrollFocusAndHighlight(selector, isFragHash) {
 	//
 	// Given a selector and whether it is a frag hash, finds the element in the document and scrolls to it. If the user wants it, we also highlight the element and give it focus.
@@ -53,6 +74,8 @@ function scrollFocusAndHighlight(selector, isFragHash) {
 	
 	var element = document.querySelector(selector);
 	if (element === null) { return false; }
+	
+	fixImageDimensionsRelatedToElement(element);
 	
 	var boundingRect = element.getBoundingClientRect();
 	
@@ -70,6 +93,7 @@ function scrollFocusAndHighlight(selector, isFragHash) {
 		highlight.style.cssText = getComputedStyle(element, null).cssText;
 		highlight.className = "";
 		highlight.id = "CSSFragHighlight";
+		
 		highlight.style.height = getComputedStyle(element, null).height + " !important";
 		highlight.style.width = getComputedStyle(element, null).width + " !important";
 		
