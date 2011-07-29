@@ -58,17 +58,18 @@ input#CSSFragLinkInput:focus { outline: none; }
 	position: absolute;
 	overflow: hidden;
 	z-index: 999999999;
+	height: auto;
+	width: auto;
 	opacity: 0;
 	background-image: -webkit-linear-gradient(#f3ec4f, #f0d346);
-	padding: 0px 4px;
+	padding: 4px !important;
 	border: 1px solid #f7e74d;
 	border-radius: 5px;
 	box-shadow: 0px 1px 1px 1px rgba(0, 0, 0, 0.40);
 	-webkit-animation-name: highlight;
 	-webkit-animation-duration: 1.6s;
+	pointer-events: none;
 }
-
-#CSSFragHighlightBackground .image { padding: 4px 0px 0px !important; }
 
 @-webkit-keyframes highlight {
 	0% {
@@ -99,4 +100,7 @@ input#CSSFragLinkInput:focus { outline: none; }
 	margin: 0px 0px 0px 0px !important;
 	-webkit-text-fill-color: #000 !important;
 	-webkit-font-smoothing: antialiased !important;
+	pointer-events: none !important;
 }
+
+#CSSFragHighlight.noChildren[style] { padding: 0px 0px 0px 0px !important; }
