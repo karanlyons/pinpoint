@@ -63,10 +63,33 @@ function fixImageDimensionsRelatedToElement(element) {
 	} while (currentNode = currentNode.parentNode);
 }
 
-function scrollFocusAndHighlight(selector, isFragHash) {
+function scrollFocusAndHighlight(selector, isFragHash, isSafe) {
 	//
 	// Given a selector and whether it is a frag hash, finds the element in the document and scrolls to it. If the user wants it, we also highlight the element and give it focus.
 	//
+	
+	if (!isSafe) {
+		var headID = document.getElementsByTagName("head")[0];
+		var newScript = document.createElement('script');
+		newScript.type = 'text/javascript';
+		newScript.innerHTML = 'if (jQuery) {\n\
+			var animating = 5;\n\
+			animationCheck = setInterval(function() {\n\
+				var animatedElements = $("*:animated").length;\n\
+				if (animatedElements < 1) { animating = animating - 1; }\n\
+				else { animating = animating + 1; }\n\
+				if (animating < 1) {\n\
+					window.clearInterval(animationCheck);\n\
+					var event = document.createEvent("Event");\n\
+					event.initEvent("animationFinished",true,true);\n\
+					document.dispatchEvent(event);\n\
+				}\n\
+			}, 100);\n\
+		}';
+		headID.appendChild(newScript);
+		
+		return false;
+	}
 	
 	if (document.querySelector("link[href='" + safari.extension.baseURI + "style.css']") === null) {
 		document.body.innerHTML += '<link rel="stylesheet" type="text/css" href="' + safari.extension.baseURI + 'style.css" />';
@@ -230,11 +253,16 @@ function handleMessage(event) {
 	}
 } safari.self.addEventListener('message', handleMessage, false);
 
-function handleLoadAndHashChange() {
+
+function handleAnimationFinished(event) {
+	handleLoadAndHashChange(event, true);
+} window.addEventListener('animationFinished', handleAnimationFinished, false);
+
+function handleLoadAndHashChange(event, isSafe) {
 	window.settings = safari.self.tab.canLoad(event, 'getSettings'); // Why look! It's another hack!
 	var CSSFragHash = decodeURIComponent(window.location.hash).match(/css\((.+)\)/);
-	if (CSSFragHash) { scrollFocusAndHighlight(CSSFragHash[1], true); }
-	else if (settings.highlightTarget === 'all' && window.location.hash !== '') { scrollFocusAndHighlight(window.location.hash, false); }
+	if (CSSFragHash) { scrollFocusAndHighlight(CSSFragHash[1], true, isSafe); }
+	else if (settings.highlightTarget === 'all' && window.location.hash !== '') { scrollFocusAndHighlight(window.location.hash, false, isSafe); }
 } window.addEventListener('load', handleLoadAndHashChange, false); window.addEventListener('hashchange', handleLoadAndHashChange, false);
 
 function showURLinWindow() {
