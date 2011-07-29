@@ -11,21 +11,6 @@ function dictionaryToSelector(dictionary) {
 	return string;
 }
 
-function offsetCoordinates(element) {
-	//
-	// Returns the x and y coordinates of the closest positioned element as integers.
-	//
-	
-	var x = y = 0;
-	if (element.offsetParent) {
-		do {
-			x += element.offsetLeft + element.style.marginLeft;
-			y += element.offsetTop + element.style.marginTop;
-		} while (element = element.offsetParent);
-	}
-	return {'x': x,'y': y};
-}
-
 function nthIndex(element) {
 	//
 	// Returns the element's DOM position amongst its children as an integer.
@@ -124,9 +109,9 @@ function scrollFocusAndHighlight(selector, isFragHash) {
 	//
 	var element = document.querySelector(selector);
 	if (element === null) { return false; }
-	var offset = offsetCoordinates(element);
+	var bounds = element.getBoundingClientRect();
 	
-	window.scrollTo(offset.x, offset.y);
+	window.scrollTo(bounds.x, bounds.y);
 	element.focus();
 	if (settings.highlightTarget !== 'none' && (settings.highlightTarget === 'all' || (isFragHash && settings.highlightTarget === 'frag'))) {
 		highlightBackground(element, (colorToRGBADictionary(settings.highlightColor) || {'r': 255, 'g': 255, 'b': 156, 'a': 1}), 2000);
