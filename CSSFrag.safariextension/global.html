@@ -5,6 +5,7 @@
 		//
 		// Adds contextual menu item if event target is discrete.
 		//
+		
 		if (event.userInfo && event.userInfo.display) {
 			event.contextMenu.appendContextMenuItem('generateFragmentLink', "Generate Fragment Link");
 		}
@@ -15,6 +16,7 @@
 		//
 		// Calls the injected js to generate a fragment link if the user selects the command from the contextual menu.
 		//
+		
 		if (event.command === 'generateFragmentLink') {
 			safari.application.activeBrowserWindow.activeTab.page.dispatchMessage('generateFragmentLink');
 		}
@@ -24,6 +26,7 @@
 		//
 		// Handles receiving messages from the injected js.
 		//
+		
 		if (event.name === 'canLoad') { // This is a hack to get settings into the injected js in a timely manner. canLoad is the only synchronous messaging event.
 		 	event.message = {
 				'preferStandardHashes': safari.extension.settings.preferStandardHashes,

@@ -1,14 +1,18 @@
+// GLOBAL VARIABLES
+var URL = "";
+
 // HELPER FUNCTIONS
 
 function dictionaryToSelector(dictionary) {
 	//
 	// Returns a dictionary's values as a concatenated string, removing the last character if it's ">".
 	//
+	
 	var string = "";
 	for (var key in dictionary) { string += dictionary[key]; }
 	
 	if (string[string.length - 1] === ">") { return string.substring(0, string.length - 1); }
-	return string;
+	else { return string; }
 }
 
 function nthIndex(element) {
@@ -21,7 +25,9 @@ function nthIndex(element) {
 	var count = 1;
 	
 	while((node = nodes.item(i++)) && (node != element)) {
-		if (node.nodeType == 1) count++;
+		if (node.nodeType == 1) {
+			count++;
+		}
 	}
 	
 	return count;
@@ -39,6 +45,7 @@ function firstElementWithSelector(selector, element) {
 	//
 	// Returns true if the first element returned by the selector is the same as the given element.
 	//
+	
 	return (document.querySelector(selector) === element);
 }
 
@@ -52,12 +59,14 @@ function fixImageDimensionsRelatedToElement(element) {
 	
 	do {
 		var children = currentNode.childNodes;
+		
 		for (child in children) {
 			if (children[child].nodeType !== undefined && children[child].nodeName.toLowerCase() === 'img' && parseInt(getComputedStyle(children[child], null).height) === 0 && parseInt(getComputedStyle(children[child], null).width) === 0) {
-				imageDimensions = new Image();
-				imageDimensions.src = children[child].src;
-				children[child].style.height = imageDimensions.height + "px !important";
-				children[child].style.width = imageDimensions.width + "px !important";
+					imageDimensions = new Image();
+					imageDimensions.src = children[child].src;
+					
+					children[child].style.height = imageDimensions.height + "px !important";
+					children[child].style.width = imageDimensions.width + "px !important";
 			}
 		}
 	} while (currentNode = currentNode.parentNode);
@@ -144,8 +153,6 @@ function scrollFocusAndHighlight(selector, isFragHash, isSafe) {
 
 // CSSFrag
 
-var URL = "";
-
 function handleContextMenu(event) {
 	//
 	// Sets display to true only if the event target is something discrete.
@@ -167,6 +174,10 @@ function handleContextMenu(event) {
 } document.addEventListener('contextmenu', handleContextMenu, false);
 
 function handleMessage(event) {
+	//
+	// Generates fragment links before sending them to showURLinWindow().
+	//
+	
 	if (event.name === 'generateFragmentLink') {
 		window.settings = safari.self.tab.canLoad(event, 'getSettings'); // Why look! It's another hack!
 		var eventTarget = document.getElementsByClassName("CSSFragTarget")[0];
@@ -260,6 +271,10 @@ function handleMessage(event) {
 
 
 function handleAnimationFinished(event) {
+	//
+	// Called by the animation check functions, hands off to handleLoadAndHashChange() when there is a lull in element animation.
+	//
+	
 	handleLoadAndHashChange(event, true);
 } window.addEventListener('animationFinished', handleAnimationFinished, false);
 
@@ -300,6 +315,10 @@ function showURLinWindow() {
 }
 
 function hideURLinWindow(event) {
+	//
+	// Hides the URL overlay when the user cuts or copies the link, or clicks outside of the main overlay.
+	//
+	
 	if (event.type === 'copy' || event.type === 'cut' || event.target.getAttribute('id') === 'CSSFragLinkWrapper') {
 		document.getElementById('CSSFragLinkWrapper').className = "";
 		setTimeout(function(){
