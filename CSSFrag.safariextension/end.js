@@ -42,80 +42,47 @@ function firstElementWithSelector(selector, element) {
 	return (document.querySelector(selector) === element);
 }
 
-function colorToRGBADictionary(color) {
-	//
-	// Returns a Hexadecimal, RGB, or RGBA color as an RGBA dictionary. If the color cannot be parsed, returns false.
-	//
-	
-	if (color.substring(0, 1) === '#') {
-		color = color.replace('#', '');
-		if (color.length === 3) {
-			var rgb = color.replace('#', '').match(/(.{1})/g);
-			rgb[0] += rgb[0];
-			rgb[1] += rgb[1];
-			rgb[2] += rgb[2];
-		}
-		else if (color.length === 6) { var rgb = color.replace('#', '').match(/(.{2})/g); }
-		else { return false; }
-		var i = 3;
-		while (i--) { rgb[i] = parseInt(rgb[i], 16); }
-		return {'r': rgb[0], 'g': rgb[1], 'b': rgb[2], 'a': 1};
-	}
-	else if (color.substring(0, 3) === 'rgb') {
-		var rgba = color.match(/([^a-z\(\), ]+)/g);
-		if (rgba.length < 3) { return false; }
-		return {'r': rgba[0], 'g': rgba[1], 'b': rgba[2], 'a': (rgba[3] || 1)};
-	}
-	else { return false; }
-	
-}
-
-function highlightBackground(element, startColor, duration) {
-	//
-	// Fades the background color of an element from yellow to the endColor, finally replacing it with the endAttribute. Basically, it's the YFT.
-	//
-	var steps = duration / 50;
-	var currentFloatColor = JSON.parse(JSON.stringify(startColor)); // More hacks. This time we're serializing and deserializing an object to get a copy instead of a reference.
-	var endColor = colorToRGBADictionary(element.style.backgroundColor);
-	if (!endColor) {
-		endColor = JSON.parse(JSON.stringify(startColor));
-		endColor.a = 0;
-	}
-	var endAttribute = element.style.backgroundColor; // We reset to the original attirbute at the end of the fade just in case we became a little off from parseInt.
-	var stepCount = 0;
-
-			element.style.backgroundColor = "rgba(" + parseInt(currentFloatColor.r) + "," + parseInt(currentFloatColor.g) + "," + parseInt(currentFloatColor.b) + "," + currentFloatColor.a + ")";
-	
-	var timer = setInterval(function() {
-		currentFloatColor.r = currentFloatColor.r - ((currentFloatColor.r - endColor.r) / (steps - stepCount));
-		currentFloatColor.g = currentFloatColor.g - ((currentFloatColor.g - endColor.g) / (steps - stepCount));
-		currentFloatColor.b = currentFloatColor.b - ((currentFloatColor.b - endColor.b) / (steps - stepCount));
-		currentFloatColor.a = currentFloatColor.a - ((currentFloatColor.a - endColor.a) / (steps - stepCount));
-		
-		element.style.backgroundColor = "rgba(" + parseInt(currentFloatColor.r) + "," + parseInt(currentFloatColor.g) + "," + parseInt(currentFloatColor.b) + "," + currentFloatColor.a + ")";
-		
-		stepCount++;
-		
-		if (stepCount >= steps) {
-			element.style.backgroundColor = endAttribute; 
-			clearInterval(timer);
-		}
-	}, 50);
-}
-
 function scrollFocusAndHighlight(selector, isFragHash) {
 	//
-	// Given a selector and whether it is a frag hash, finds the element in the document and scrolls and focuses on it. If the user wants it, we also highlight the element.
+	// Given a selector and whether it is a frag hash, finds the element in the document and scrolls to it. If the user wants it, we also highlight the element and give it focus.
 	//
+	
+	if (document.querySelector("link[href='" + safari.extension.baseURI + "style.css']") === null) {
+		document.body.innerHTML += '<link rel="stylesheet" type="text/css" href="' + safari.extension.baseURI + 'style.css" />';
+	}
+	
 	var element = document.querySelector(selector);
 	if (element === null) { return false; }
-	var bounds = element.getBoundingClientRect();
 	
-	window.scrollTo(bounds.x, bounds.y);
-	element.focus();
+	var boundingRect = element.getBoundingClientRect();
+	
+	var bounds = {
+		'top': boundingRect.top + document.body.scrollTop,
+		'left': boundingRect.left + document.body.scrollLeft,
+		'height': boundingRect.height,
+		'width': boundingRect.width
+	};
+	
 	if (settings.highlightTarget !== 'none' && (settings.highlightTarget === 'all' || (isFragHash && settings.highlightTarget === 'frag'))) {
-		highlightBackground(element, (colorToRGBADictionary(settings.highlightColor) || {'r': 255, 'g': 255, 'b': 156, 'a': 1}), 2000);
+		window.scrollTo((bounds.left + (bounds.width / 2) - (window.innerWidth / 2)), (bounds.top + (bounds.height / 2) - (window.innerHeight / 2)));
+		
+		var highlight = element.cloneNode(true);
+		highlight.style.cssText = getComputedStyle(element, null).cssText;
+		highlight.className = "";
+		highlight.id = "CSSFragHighlight";
+		highlight.style.height = getComputedStyle(element, null).height + " !important";
+		highlight.style.width = getComputedStyle(element, null).width + " !important";
+		
+		document.body.innerHTML += "<div id=\"CSSFragHighlightBackground\"></div>";
+		var highlightBackground = document.getElementById('CSSFragHighlightBackground');
+		highlightBackground.style.left = bounds.left - 5 + "px"; // Subtract 1px for the border, 4px for the padding.
+		highlightBackground.style.top = bounds.top - 1 + "px"; // Subtract 1px for the border.
+		highlightBackground.appendChild(highlight);
+		setTimeout(function(){document.body.removeChild(document.getElementById('CSSFragHighlightBackground'));}, 1600);
+		
+		element.focus();
 	}
+	else { window.scrollTo(bounds.left, bounds.top); }
 }
 
 
@@ -167,6 +134,7 @@ function handleMessage(event) {
 				var selector = { // Ordered by their position in the CSS selector.
 					'name': nodeName,
 					'href': "",
+					'src': "",
 					'title': "",
 					'type': "",
 					'rel': "",
@@ -203,7 +171,7 @@ function handleMessage(event) {
 				// Class
 				currentNodeAttribute = currentNode.getAttribute('class');
 				if (currentNodeAttribute !== null && currentNodeAttribute !== '') {
-					selector.class = "." + currentNodeAttribute;
+					selector.class = "." + currentNodeAttribute.replace(/ /g, ".");
 					if (firstElementWithSelector(dictionaryToSelector(selector), eventTarget)) { break; }
 				}
 				
@@ -211,7 +179,7 @@ function handleMessage(event) {
 				for (var i in attributes) {
 					currentNodeAttribute = currentNode.getAttribute(attributes[i]);
 					if (currentNodeAttribute !== null) {
-						selector[attributes[i]] = "[" + attributes[i] + "='" + currentNodeAttribute + "']";
+						selector[attributes[i]] = "[" + attributes[i] + "='" + currentNodeAttribute.replace(/('")/g, "\\$1") + "']";
 						if (firstElementWithSelector(dictionaryToSelector(selector), eventTarget)) { break; }
 					}
 				}
@@ -242,8 +210,12 @@ function handleLoadAndHashChange() {
 } window.addEventListener('load', handleLoadAndHashChange, false); window.addEventListener('hashchange', handleLoadAndHashChange, false);
 
 function showURLinWindow() {
+	if (document.querySelector("link[href='" + safari.extension.baseURI + "style.css']") === null) {
+		document.body.innerHTML += '<link rel="stylesheet" type="text/css" href="' + safari.extension.baseURI + 'style.css" />';
+	}
+	
 	if (document.getElementById('CSSFragLinkWrapper') === null) {
-		document.body.innerHTML += '<link rel="stylesheet" type="text/css" href="' + safari.extension.baseURI + 'style.css" /><div id="CSSFragLinkWrapper"><div id="CSSFragLinkContainer"><div id="CSSFragLinkPadding"><input id="CSSFragLinkInput" name="CSSFragLinkInput" value="" autofocus></div></div></div>';
+		document.body.innerHTML += '<div id="CSSFragLinkWrapper"><div id="CSSFragLinkContainer"><div id="CSSFragLinkPadding"><input id="CSSFragLinkInput" name="CSSFragLinkInput" value="" autofocus></div></div></div>';
 		
 		document.getElementById('CSSFragLinkInput').addEventListener('keyup', function(event){ event.target.value = URL; event.target.select(); }, false);
 		
@@ -251,6 +223,7 @@ function showURLinWindow() {
 		document.addEventListener('copy', hideURLinWindow, false);
 		document.addEventListener('cut', hideURLinWindow, false);
 	}
+	
 	document.getElementById('CSSFragLinkInput').value = URL;
 	
 	document.getElementById('CSSFragLinkWrapper').style.display = "block";

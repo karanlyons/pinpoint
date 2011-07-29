@@ -13,12 +13,6 @@
 		<string>CheckBox</string>
 	</dict>
 	<dict>
-		<key>Title</key>
-		<string>Highlighting</string>
-		<key>Type</key>
-		<string>Group</string>
-	</dict>
-	<dict>
 		<key>DefaultValue</key>
 		<string>frag</string>
 		<key>Key</key>
@@ -39,16 +33,6 @@
 			<string>frag</string>
 			<string>none</string>
 		</array>
-	</dict>
-	<dict>
-		<key>DefaultValue</key>
-		<string>#FFFF9C</string>
-		<key>Key</key>
-		<string>highlightColor</string>
-		<key>Title</key>
-		<string>Highlight Color</string>
-		<key>Type</key>
-		<string>TextField</string>
 	</dict>
 </array>
 </plist>
