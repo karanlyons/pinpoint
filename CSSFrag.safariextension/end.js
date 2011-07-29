@@ -87,7 +87,11 @@ function scrollFocusAndHighlight(selector, isFragHash) {
 	};
 	
 	if (settings.highlightTarget !== 'none' && (settings.highlightTarget === 'all' || (isFragHash && settings.highlightTarget === 'frag'))) {
-		window.scrollTo((bounds.left + (bounds.width / 2) - (window.innerWidth / 2)), (bounds.top + (bounds.height / 2) - (window.innerHeight / 2)));
+		var scroll = {
+			'top': (bounds.top + (bounds.height / 2) - (window.innerHeight / 2)),
+			'left': (bounds.left + (bounds.width / 2) - (window.innerWidth / 2))
+		}
+		window.scrollTo(scroll.left, scroll.top);
 		
 		var highlight = element.cloneNode(true);
 		var isImage = (highlight.nodeName.toLowerCase() === 'img');
