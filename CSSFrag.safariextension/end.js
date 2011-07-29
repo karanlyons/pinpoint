@@ -92,7 +92,11 @@ function scrollFocusAndHighlight(selector, isFragHash, isSafe) {
 	}
 	
 	if (document.querySelector("link[href='" + safari.extension.baseURI + "style.css']") === null) {
-		document.body.innerHTML += '<link rel="stylesheet" type="text/css" href="' + safari.extension.baseURI + 'style.css" />';
+		var newStyles = document.createElement('link');
+		newStyles.rel = 'stylesheet';
+		newStyles.type = 'test/css';
+		newStyles.href = safari.extension.baseURI + 'style.css';
+		document.body.appendChild(newStyles);
 	}
 	
 	var element = document.querySelector(selector);
@@ -124,11 +128,12 @@ function scrollFocusAndHighlight(selector, isFragHash, isSafe) {
 		highlight.style.height = getComputedStyle(element, null).height + " !important";
 		highlight.style.width = getComputedStyle(element, null).width + " !important";
 		
-		document.body.innerHTML += "<div id=\"CSSFragHighlightBackground\"></div>";
-		var highlightBackground = document.getElementById('CSSFragHighlightBackground');
+		var highlightBackground = document.createElement('div')
+		highlightBackground.id='CSSFragHighlightBackground';
 		highlightBackground.style.left = bounds.left - 5 + "px"; // Subtract 1px for the border, 4px for the padding.
 		highlightBackground.style.top = bounds.top - 5 + "px";
 		highlightBackground.appendChild(highlight);
+		document.body.appendChild(highlightBackground);
 		setTimeout(function(){document.body.removeChild(document.getElementById('CSSFragHighlightBackground'));}, 1600);
 		
 		element.focus();
@@ -267,15 +272,21 @@ function handleLoadAndHashChange(event, isSafe) {
 
 function showURLinWindow() {
 	if (document.querySelector("link[href='" + safari.extension.baseURI + "style.css']") === null) {
-		document.body.innerHTML += '<link rel="stylesheet" type="text/css" href="' + safari.extension.baseURI + 'style.css" />';
+		var newStyles = document.createElement('link');
+		newStyles.rel = 'stylesheet';
+		newStyles.type = 'test/css';
+		newStyles.href = safari.extension.baseURI + 'style.css';
+		document.body.appendChild(newStyles);
 	}
 	
 	if (document.getElementById('CSSFragLinkWrapper') === null) {
-		document.body.innerHTML += '<div id="CSSFragLinkWrapper"><div id="CSSFragLinkContainer"><div id="CSSFragLinkPadding"><input id="CSSFragLinkInput" name="CSSFragLinkInput" value="" autofocus></div></div></div>';
+		linkWrapper = document.createElement('div');
+		linkWrapper.id = "CSSFragLinkWrapper";
+		linkWrapper.addEventListener('click', hideURLinWindow, false);
+		linkWrapper.innerHTML = '<div id="CSSFragLinkContainer"><div id="CSSFragLinkPadding"><input id="CSSFragLinkInput" name="CSSFragLinkInput" value="" autofocus></div></div></div>'
+		document.body.appendChild(linkWrapper);
 		
 		document.getElementById('CSSFragLinkInput').addEventListener('keyup', function(event){ event.target.value = URL; event.target.select(); }, false);
-		
-		document.getElementById('CSSFragLinkWrapper').addEventListener('click', hideURLinWindow, false);
 		document.addEventListener('copy', hideURLinWindow, false);
 		document.addEventListener('cut', hideURLinWindow, false);
 	}
