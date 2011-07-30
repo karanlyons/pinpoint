@@ -13,7 +13,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>2.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>Chrome</key>
@@ -32,7 +32,7 @@
 		</dict>
 	</dict>
 	<key>Description</key>
-	<string>CSSFrag is a Safari extension allowing users to share links to any part of a webpage.</string>
+	<string>Allows linking to any part of a webpage.</string>
 	<key>ExtensionInfoDictionaryVersion</key>
 	<string>1.0</string>
 	<key>Permissions</key>
