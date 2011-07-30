@@ -322,7 +322,7 @@ function nthIndex(element) {
 	
 	for (node in nodes) {
 		if (nodes[node] === element) { break; }
-		if (nodes[node].nodeType == 1) { count++; }
+		if (nodes[node].nodeType === 1) { count++; }
 	}
 	
 	return count;
@@ -421,7 +421,7 @@ function handleContextMenu(event) {
 	var nodeID = event.target.getAttribute('id');
 	
 	var eventTargets = document.getElementsByClassName("CSSFragTarget"); // Safari doesn't allow passing elements through setContextMenuEventUserInfo.
-	for (var i, length = eventTargets.length; i < length; i++) {
+	for (var i = 0, length = eventTargets.length; i < length; i++) {
 		eventTargets[i].className = eventTargets[i].className.replace(/ CSSFragTarget/g, "");
 	}
 	event.target.className += " CSSFragTarget";
