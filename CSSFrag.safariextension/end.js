@@ -235,8 +235,9 @@ function showLinkinWindow(link) {
 	if (document.getElementById('CSSFragLinkWrapper') === null) { // Check to see if the overlay elements are already in the page.
 		linkWrapper = document.createElement('div');
 		linkWrapper.id = "CSSFragLinkWrapper";
+		linkWrapper.className = "hidden";
 		linkWrapper.addEventListener('click', hideLinkinWindow, false);
-		linkWrapper.innerHTML = '<div id="CSSFragLinkContainer"><div id="CSSFragLinkPadding"><input id="CSSFragLinkInput" name="CSSFragLinkInput" value="" autofocus></div></div></div>';
+		linkWrapper.innerHTML = '<div id="CSSFragLinkContainer"><div id="CSSFragLinkPadding"><input id="CSSFragLinkInput" name="CSSFragLinkInput" value="" spellcheck="false" autofocus></div></div></div>';
 		document.body.appendChild(linkWrapper);
 		
 		document.getElementById('CSSFragLinkInput').addEventListener('keyup', function(event){ event.target.value = link; event.target.select(); }, false);
@@ -244,12 +245,13 @@ function showLinkinWindow(link) {
 		document.addEventListener('cut', hideLinkinWindow, false);
 	}
 	
-	document.getElementById('CSSFragLinkInput').value = link;
+	linkInput = document.getElementById('CSSFragLinkInput');
+	linkInput.value = link;
 	
-	document.getElementById('CSSFragLinkWrapper').style.display = "block";
-	document.getElementById('CSSFragLinkWrapper').className = "";
-	setTimeout(function(){document.getElementById('CSSFragLinkWrapper').className = "active";}, 0);
-	document.getElementById('CSSFragLinkInput').select();
+	linkWrapper = document.getElementById('CSSFragLinkWrapper');
+	linkWrapper.className = "";
+	setTimeout(function() { document.getElementById('CSSFragLinkWrapper').className = "active"; }, 0);
+	linkInput.select();
 	
 	return true;
 }
@@ -261,12 +263,10 @@ function hideLinkinWindow(event) {
 	//
 	
 	if (event.type === 'copy' || event.type === 'cut' || event.target.getAttribute('id') === 'CSSFragLinkWrapper') {
-		document.getElementById('CSSFragLinkWrapper').className = "";
-		setTimeout(function(){
-			document.getElementById('CSSFragLinkWrapper').style.display = "none";
-			document.getElementById('CSSFragLinkWrapper').className = "hidden";
-		}, 600);
-	}
+		linkWrapper = document.getElementById('CSSFragLinkWrapper');
+		linkWrapper.className = "";
+		
+		setTimeout(function() { linkWrapper.className = "hidden"; }, 600); }
 	
 	return true;
 }
