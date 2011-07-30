@@ -83,7 +83,7 @@ function scrollFocusAndHighlight(selector, isCSSSelector, elementsAreStatic) {
 
 function generateFragmentLink(event) {
 	//
-	// Generates fragment links before sending them to showURLinWindow().
+	// Generates fragment links before sending them to showLinkinWindow().
 	//
 	
 	if (event.name === 'generateFragmentLink') {
@@ -95,11 +95,11 @@ function generateFragmentLink(event) {
 		var currentNode = eventTarget;
 		var currentNodeAttribute = currentNode.getAttribute('id');
 		var oldSelector = "";
-		var URL = "";
+		var link = "";
 		
 		if (singleElementWithSelector(currentNodeAttribute)) { // If this element has a unique ID, we're done here.
-			if (settings.preferStandardHashes) { URL = href + "#" + currentNodeAttribute; }
-			else { URL = href + "#css(%23" + currentNodeAttribute + ")"; }
+			if (settings.preferStandardHashes) { link = href + "#" + currentNodeAttribute; }
+			else { link = href + "#css(%23" + currentNodeAttribute + ")"; }
 		}
 		
 		else {
@@ -177,19 +177,57 @@ function generateFragmentLink(event) {
 				oldSelector = dictionaryToSelector(selector);
 			} while (currentNode = currentNode.parentNode);
 			
-			URL = href + "#css(" + encodeURIComponent(dictionaryToSelector(selector)) + ")";
+			link = href + "#css(" + encodeURIComponent(dictionaryToSelector(selector)) + ")";
+			if (settings.linkShorteningService !== 'none') { link = shortenLink(link, settings.linkShorteningService, settings.linkShorteningUsername, settings.linkShorteningAPIKey); }
 		}
 		
-		showURLinWindow(URL);
+		showLinkinWindow(link);
 	}
 	
 	return true;
 } safari.self.addEventListener('message', generateFragmentLink, false);
 
 
-function showURLinWindow(URL) {
+function shortenLink(link, service, username, APIKey) {
 	//
-	// Shows the URL overlay.
+	// Returns a shortened link, or the original long link if there is an error.
+	//
+	
+	var services = {
+		'bitly': {
+			'url': 'http://api.bitly.com/v3/shorten?format=json&login=' + username + '&apiKey=' + APIKey + '&longURL=',
+			'key': 'data.url'
+		},
+		'isgd': {
+			'url': 'http://is.gd/create.php?format=json&url=',
+			'key': 'shorturl'
+		}
+	}
+	
+	if (service in services) {
+		var request = new XMLHttpRequest();
+		var response = {};
+		
+		request.open('GET', services[service].url + encodeURIComponent(link), false);
+		request.send();
+		
+		if (request.readyState === 4 && request.status === 200) {
+			key = services[service].key.split('.');
+			response = JSON.parse(request.responseText);
+			
+			for (var i = 0, length = key.length; i < length; i++) { response = response[key[i]]; }
+			
+			if (response !== undefined) { return response; }
+		}
+	}
+	
+	return link;
+}
+
+
+function showLinkinWindow(link) {
+	//
+	// Shows the link overlay.
 	//
 	
 	injectStyles();
@@ -197,16 +235,16 @@ function showURLinWindow(URL) {
 	if (document.getElementById('CSSFragLinkWrapper') === null) { // Check to see if the overlay elements are already in the page.
 		linkWrapper = document.createElement('div');
 		linkWrapper.id = "CSSFragLinkWrapper";
-		linkWrapper.addEventListener('click', hideURLinWindow, false);
+		linkWrapper.addEventListener('click', hideLinkinWindow, false);
 		linkWrapper.innerHTML = '<div id="CSSFragLinkContainer"><div id="CSSFragLinkPadding"><input id="CSSFragLinkInput" name="CSSFragLinkInput" value="" autofocus></div></div></div>';
 		document.body.appendChild(linkWrapper);
 		
-		document.getElementById('CSSFragLinkInput').addEventListener('keyup', function(event){ event.target.value = URL; event.target.select(); }, false);
-		document.addEventListener('copy', hideURLinWindow, false);
-		document.addEventListener('cut', hideURLinWindow, false);
+		document.getElementById('CSSFragLinkInput').addEventListener('keyup', function(event){ event.target.value = link; event.target.select(); }, false);
+		document.addEventListener('copy', hideLinkinWindow, false);
+		document.addEventListener('cut', hideLinkinWindow, false);
 	}
 	
-	document.getElementById('CSSFragLinkInput').value = URL;
+	document.getElementById('CSSFragLinkInput').value = link;
 	
 	document.getElementById('CSSFragLinkWrapper').style.display = "block";
 	document.getElementById('CSSFragLinkWrapper').className = "";
@@ -217,9 +255,9 @@ function showURLinWindow(URL) {
 }
 
 
-function hideURLinWindow(event) {
+function hideLinkinWindow(event) {
 	//
-	// Hides the URL overlay when the user cuts or copies the link, or clicks outside of the main overlay.
+	// Hides the link overlay when the user cuts or copies the link, or clicks outside of the main overlay.
 	//
 	
 	if (event.type === 'copy' || event.type === 'cut' || event.target.getAttribute('id') === 'CSSFragLinkWrapper') {

@@ -34,5 +34,61 @@
 			<string>none</string>
 		</array>
 	</dict>
+	<dict>
+		<key>Type</key>
+		<string>Separator</string>
+	</dict>
+	<dict>
+		<key>DefaultValue</key>
+		<string>isgd</string>
+		<key>Key</key>
+		<string>linkShorteningService</string>
+		<key>Title</key>
+		<string>Link Shortening</string>
+		<key>Titles</key>
+		<array>
+			<string>Don't Shorten Links</string>
+			<string>bit.ly</string>
+			<string>is.gd</string>
+		</array>
+		<key>Type</key>
+		<string>PopUpButton</string>
+		<key>Values</key>
+		<array>
+			<string>none</string>
+			<string>bitly</string>
+			<string>isgd</string>
+		</array>
+	</dict>
+	<dict>
+		<key>Title</key>
+		<string>Credentials (Required for bit.ly)</string>
+		<key>Type</key>
+		<string>Group</string>
+	</dict>
+	<dict>
+		<key>DefaultValue</key>
+		<string></string>
+		<key>Key</key>
+		<string>linkShorteningUsername</string>
+		<key>Title</key>
+		<string>Username</string>
+		<key>Type</key>
+		<string>TextField</string>
+	</dict>
+	<dict>
+		<key>DefaultValue</key>
+		<string></string>
+		<key>Key</key>
+		<string>linkShorteningAPIKey</string>
+		<key>Password</key>
+		<true/>
+		<key>Secure</key>
+		<true/>
+		<key>Title</key>
+		<string>API Key</string>
+		<key>Type</key>
+		<string>TextField</string>
+	</dict>
 </array>
 </plist>
