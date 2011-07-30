@@ -1,120 +1,37 @@
-// GLOBAL VARIABLES
-var URL = "";
+//
+//		CSSFRAG
+//
 
-// HELPER FUNCTIONS
-
-function dictionaryToSelector(dictionary) {
+function scrollFocusAndHighlight(selector, isCSSSelector, elementsAreStatic) {
 	//
-	// Returns a dictionary's values as a concatenated string, removing the last character if it's ">".
-	//
-	
-	var string = "";
-	for (var key in dictionary) { string += dictionary[key]; }
-	
-	if (string[string.length - 1] === ">") { return string.substring(0, string.length - 1); }
-	else { return string; }
-}
-
-function nthIndex(element) {
-	//
-	// Returns the element's DOM position amongst its children as an integer.
+	// Finds an element in the document via a selector, and optionally scrolls
+	// to and highlights it depending on the user's settings. isCSSSelector is
+	// true if the selector is a CSS Selector (as opposed to an ID).
 	//
 	
-	var nodes = element.parentNode.childNodes, node;
-	var i = 0;
-	var count = 1;
-	
-	while((node = nodes.item(i++)) && (node != element)) {
-		if (node.nodeType == 1) {
-			count++;
+	if (!elementsAreStatic) { // If elementsAreStatic is not true, it means they may be currently animated.
+		if (!document.getElementById('CSSFragAnimationChecks')) {
+			var animationChecks = document.createElement('script');
+			animationChecks.type = 'text/javascript';
+			animationChecks.id = 'CSSFragAnimationChecks';
+			animationChecks.innerHTML = 'function checkForAnimation(){if(typeof jQuery==="function"){var a=1;var b=setInterval(function(){var c=$("*:animated").length;if(c<1){a=a-1}else{a=a+1}if(a<1){elementsAreStatic(b)}},100)}else{elementsAreStatic()}}window.addEventListener("checkForAnimation",checkForAnimation,true);function elementsAreStatic(a){window.clearInterval(a);var b=document.createEvent("Event");b.initEvent("elementsAreStatic",true,true);document.dispatchEvent(b)};';
+			document.head.appendChild(animationChecks);
 		}
-	}
-	
-	return count;
-}
-
-function singleElementWithSelector(selector) {
-	//
-	// Returns true if the selector has only one corresponding element.
-	//
-	
-	return (document.querySelectorAll(selector).length === 1);
-}
-
-function firstElementWithSelector(selector, element) {
-	//
-	// Returns true if the first element returned by the selector is the same as the given element.
-	//
-	
-	return (document.querySelector(selector) === element);
-}
-
-function fixImageDimensionsRelatedToElement(element) {
-	//
-	// Given an element, walks up the tree from it, repairing any img nodes' height and width attributes if they weren't properly set.
-	//
-	
-	var currentNode = element.parentNode;
-	var imageDimensions = undefined;
-	
-	do {
-		var children = currentNode.childNodes;
 		
-		for (child in children) {
-			if (children[child].nodeType !== undefined && children[child].nodeName.toLowerCase() === 'img' && parseInt(getComputedStyle(children[child], null).height) === 0 && parseInt(getComputedStyle(children[child], null).width) === 0) {
-					imageDimensions = new Image();
-					imageDimensions.src = children[child].src;
-					
-					children[child].style.height = imageDimensions.height + "px !important";
-					children[child].style.width = imageDimensions.width + "px !important";
-			}
-		}
-	} while (currentNode = currentNode.parentNode);
-}
-
-function scrollFocusAndHighlight(selector, isFragHash, isSafe) {
-	//
-	// Given a selector and whether it is a frag hash, finds the element in the document and scrolls to it. If the user wants it, we also highlight the element and give it focus.
-	//
-	
-	if (!isSafe) {
-		var headID = document.getElementsByTagName("head")[0];
-		var newScript = document.createElement('script');
-		newScript.type = 'text/javascript';
-		newScript.innerHTML = 'if (jQuery) {\n\
-			var animating = 5;\n\
-			animationCheck = setInterval(function() {\n\
-				var animatedElements = $("*:animated").length;\n\
-				if (animatedElements < 1) { animating = animating - 1; }\n\
-				else { animating = animating + 1; }\n\
-				if (animating < 1) {\n\
-					window.clearInterval(animationCheck);\n\
-					var event = document.createEvent("Event");\n\
-					event.initEvent("animationFinished",true,true);\n\
-					document.dispatchEvent(event);\n\
-				}\n\
-			}, 100);\n\
-		}';
-		headID.appendChild(newScript);
+		var event = document.createEvent('Event');
+		event.initEvent('checkForAnimation', true, true);
+		document.dispatchEvent(event);
 		
 		return false;
 	}
 	
-	if (document.querySelector("link[href='" + safari.extension.baseURI + "style.css']") === null) {
-		var newStyles = document.createElement('link');
-		newStyles.rel = 'stylesheet';
-		newStyles.type = 'test/css';
-		newStyles.href = safari.extension.baseURI + 'style.css';
-		document.body.appendChild(newStyles);
-	}
+	injectStyles();
 	
 	var element = document.querySelector(selector);
 	if (element === null) { return false; }
-	
 	fixImageDimensionsRelatedToElement(element);
 	
 	var boundingRect = element.getBoundingClientRect();
-	
 	var bounds = {
 		'top': boundingRect.top + document.body.scrollTop,
 		'left': boundingRect.left + document.body.scrollLeft,
@@ -122,64 +39,55 @@ function scrollFocusAndHighlight(selector, isFragHash, isSafe) {
 		'width': boundingRect.width
 	};
 	
-	if (settings.highlightTarget !== 'none' && (settings.highlightTarget === 'all' || (isFragHash && settings.highlightTarget === 'frag'))) {
-		var scroll = {
-			'top': (bounds.top + (bounds.height / 2) - (window.innerHeight / 2)),
-			'left': (bounds.left + (bounds.width / 2) - (window.innerWidth / 2))
+	if (settings.highlightTarget !== 'none' && (settings.highlightTarget === 'all' || (isCSSSelector && settings.highlightTarget === 'frag'))) {
+		if ((document.body.scrollLeft <= boundingRect.left) && (boundingRect.left <= document.body.scrollLeft + window.innerWidth) && (document.body.scrollTop <= boundingRect.top) && (boundingRect.top <= document.body.scrollTop + window.innerHeight) && (document.body.scrollLeft <= boundingRect.left + boundingRect.width) && (boundingRect.left + boundingRect.width <= document.body.scrollLeft + window.innerWidth) && (document.body.scrollTop <= boundingRect.top + boundingRect.height) && (boundingRect.top + boundingRect.height <= document.body.scrollTop + window.innerHeight)) {
+			var scroll = {
+				'top': document.body.scrollTop,
+				'left': document.body.scrollLeft
+			};
 		}
-		window.scrollTo(scroll.left, scroll.top);
+		
+		else {
+			var scroll = {
+				'top': (bounds.top + (bounds.height / 2) - (window.innerHeight / 2)),
+				'left': (bounds.left + (bounds.width / 2) - (window.innerWidth / 2))
+			};
+		}
+		
+		var highlightBackground = document.createElement('div');
+		highlightBackground.id = 'CSSFragHighlightBackground';
+		highlightBackground.style.left = bounds.left - 5 + "px";
+		highlightBackground.style.top = bounds.top - 5 + "px";
 		
 		var highlight = element.cloneNode(true);
-		highlight.style.cssText = getComputedStyle(element, null).cssText;
+		highlight.style.cssText = getComputedStyle(element).cssText;
 		highlight.id = "CSSFragHighlight";
 		highlight.className = "";
 		
-		highlight.style.height = getComputedStyle(element, null).height + " !important";
-		highlight.style.width = getComputedStyle(element, null).width + " !important";
-		
-		var highlightBackground = document.createElement('div')
-		highlightBackground.id='CSSFragHighlightBackground';
-		highlightBackground.style.left = bounds.left - 5 + "px"; // Subtract 1px for the border, 4px for the padding.
-		highlightBackground.style.top = bounds.top - 5 + "px";
+		highlight.style.height = getComputedStyle(element).height + " !important";
+		highlight.style.width = getComputedStyle(element).width + " !important";
 		highlightBackground.appendChild(highlight);
-		document.body.appendChild(highlightBackground);
-		setTimeout(function(){document.body.removeChild(document.getElementById('CSSFragHighlightBackground'));}, 1600);
 		
+		window.scrollTo(scroll.left, scroll.top);
+		document.body.appendChild(highlightBackground);
 		element.focus();
+		
+		setTimeout(function() { document.body.removeChild(highlightBackground); }, 1600);
 	}
+	
 	else { window.scrollTo(bounds.left, bounds.top); }
+	
+	return true;
 }
 
 
-// CSSFrag
-
-function handleContextMenu(event) {
-	//
-	// Sets display to true only if the event target is something discrete.
-	//
-	
-	var display = true;
-	var nodeName = event.target.nodeName.toLowerCase();
-	var nodeID = event.target.getAttribute('id');
-	
-	var eventTargets = document.getElementsByClassName("CSSFragTarget"); // Safari doesn't allow passing elements through setContextMenuEventUserInfo, so we're doing it through the DOM.
-	if (eventTargets.length > 0) {
-		for (var i=0; i<=eventTargets.length; i++) {
-			eventTargets[i].className = eventTargets[i].className.replace(/ CSSFragTarget/g, "");
-		}
-	}
-
-	event.target.className += " CSSFragTarget";	
-	safari.self.tab.setContextMenuEventUserInfo(event, { 'display': (nodeName !== 'body' && nodeName !== 'head' && nodeName !== 'html' && nodeName !== '#document' && nodeID !== 'CSSFragLinkWrapper' && nodeID !== 'CSSFragLinkContainer' && nodeID !== 'CSSFragLinkInput') });
-} document.addEventListener('contextmenu', handleContextMenu, false);
-
-function handleMessage(event) {
+function generateFragmentLink(event) {
 	//
 	// Generates fragment links before sending them to showURLinWindow().
 	//
 	
 	if (event.name === 'generateFragmentLink') {
-		window.settings = safari.self.tab.canLoad(event, 'getSettings'); // Why look! It's another hack!
+		window.settings = safari.self.tab.canLoad(event, 'getSettings');
 		var eventTarget = document.getElementsByClassName("CSSFragTarget")[0];
 		eventTarget.className = eventTarget.className.replace(/ CSSFragTarget/g, "");
 		
@@ -187,14 +95,16 @@ function handleMessage(event) {
 		var currentNode = eventTarget;
 		var currentNodeAttribute = currentNode.getAttribute('id');
 		var oldSelector = "";
+		var URL = "";
 		
 		if (singleElementWithSelector(currentNodeAttribute)) { // If this element has a unique ID, we're done here.
 			if (settings.preferStandardHashes) { URL = href + "#" + currentNodeAttribute; }
 			else { URL = href + "#css(%23" + currentNodeAttribute + ")"; }
 		}
+		
 		else {
 			do {
-				var nodeName = currentNode.nodeName.toLowerCase()
+				var nodeName = currentNode.nodeName.toLowerCase();
 				if (nodeName === 'body' || nodeName === 'head' || nodeName === 'html' || nodeName === '#document') { break; }
 				var currentNodeAttribute = "";
 				
@@ -212,10 +122,10 @@ function handleMessage(event) {
 					'id': "",
 					'class': "",
 					'nthChild': "",
-					'oldSelector': ">" + oldSelector,
-				}
+					'oldSelector': ">" + oldSelector
+				};
 				
-				var attributes = [ // Ordered by uniqueness. We could do a uniqueness check on the nodeName itself, but that seems *extremely* volatile.
+				var attributes = [ // Ordered by uniqueness.
 					'href',
 					'src',
 					'title',
@@ -225,8 +135,8 @@ function handleMessage(event) {
 					'value',
 					'action',
 					'rows',
-					'rel',
-				]
+					'rel'
+				];
 				
 				// ID
 				currentNodeAttribute = currentNode.getAttribute('id');
@@ -238,15 +148,20 @@ function handleMessage(event) {
 				// Class
 				currentNodeAttribute = currentNode.getAttribute('class');
 				if (currentNodeAttribute !== null && currentNodeAttribute !== '') {
-					selector.class = "." + currentNodeAttribute.replace(/ /g, ".");
+					currentNodeAttribute = currentNodeAttribute.split(" ");
+					
+					for (var CSSClass in currentNodeAttribute) { // We add each class one by one and check the selector.
+						selector.class += "." + currentNodeAttribute[CSSClass];
+						if (firstElementWithSelector(dictionaryToSelector(selector), eventTarget)) { break; }
+					}
 					if (firstElementWithSelector(dictionaryToSelector(selector), eventTarget)) { break; }
 				}
 				
 				// All other attributes
-				for (var i in attributes) {
-					currentNodeAttribute = currentNode.getAttribute(attributes[i]);
+				for (var attribute in attributes) {
+					currentNodeAttribute = currentNode.getAttribute(attributes[attribute]);
 					if (currentNodeAttribute !== null) {
-						selector[attributes[i]] = "[" + attributes[i] + "='" + currentNodeAttribute.replace(/('")/g, "\\$1") + "']";
+						selector[attributes[attribute]] = "[" + attributes[attribute] + "='" + currentNodeAttribute.replace(/('")/g, "\\$1") + "']";
 						if (firstElementWithSelector(dictionaryToSelector(selector), eventTarget)) { break; }
 					}
 				}
@@ -255,50 +170,35 @@ function handleMessage(event) {
 				
 				// :nth-child (We don't break on uniqueness here, because :nth-child is really volatile, and a last resort.)
 				var currentNodePosition = nthIndex(currentNode);
-				if (currentNodePosition > 1) { // To my knowledge, we can't fold this into the for loop as we're running a different check.
+				if (currentNodePosition > 1) {
 					selector.nthChild = ":nth-child(" + currentNodePosition + ")";
 				}
 				
 				oldSelector = dictionaryToSelector(selector);
 			} while (currentNode = currentNode.parentNode);
 			
-			URL = href + "#css(" + encodeURIComponent(dictionaryToSelector(selector)) + ")"
+			URL = href + "#css(" + encodeURIComponent(dictionaryToSelector(selector)) + ")";
 		}
 		
-		showURLinWindow();
-	}
-} safari.self.addEventListener('message', handleMessage, false);
-
-
-function handleAnimationFinished(event) {
-	//
-	// Called by the animation check functions, hands off to handleLoadAndHashChange() when there is a lull in element animation.
-	//
-	
-	handleLoadAndHashChange(event, true);
-} window.addEventListener('animationFinished', handleAnimationFinished, false);
-
-function handleLoadAndHashChange(event, isSafe) {
-	window.settings = safari.self.tab.canLoad(event, 'getSettings'); // Why look! It's another hack!
-	var CSSFragHash = decodeURIComponent(window.location.hash).match(/css\((.+)\)/);
-	if (CSSFragHash) { scrollFocusAndHighlight(CSSFragHash[1], true, isSafe); }
-	else if (settings.highlightTarget === 'all' && window.location.hash !== '') { scrollFocusAndHighlight(window.location.hash, false, isSafe); }
-} window.addEventListener('load', handleLoadAndHashChange, false); window.addEventListener('hashchange', handleLoadAndHashChange, false);
-
-function showURLinWindow() {
-	if (document.querySelector("link[href='" + safari.extension.baseURI + "style.css']") === null) {
-		var newStyles = document.createElement('link');
-		newStyles.rel = 'stylesheet';
-		newStyles.type = 'test/css';
-		newStyles.href = safari.extension.baseURI + 'style.css';
-		document.body.appendChild(newStyles);
+		showURLinWindow(URL);
 	}
 	
-	if (document.getElementById('CSSFragLinkWrapper') === null) {
+	return true;
+} safari.self.addEventListener('message', generateFragmentLink, false);
+
+
+function showURLinWindow(URL) {
+	//
+	// Shows the URL overlay.
+	//
+	
+	injectStyles();
+	
+	if (document.getElementById('CSSFragLinkWrapper') === null) { // Check to see if the overlay elements are already in the page.
 		linkWrapper = document.createElement('div');
 		linkWrapper.id = "CSSFragLinkWrapper";
 		linkWrapper.addEventListener('click', hideURLinWindow, false);
-		linkWrapper.innerHTML = '<div id="CSSFragLinkContainer"><div id="CSSFragLinkPadding"><input id="CSSFragLinkInput" name="CSSFragLinkInput" value="" autofocus></div></div></div>'
+		linkWrapper.innerHTML = '<div id="CSSFragLinkContainer"><div id="CSSFragLinkPadding"><input id="CSSFragLinkInput" name="CSSFragLinkInput" value="" autofocus></div></div></div>';
 		document.body.appendChild(linkWrapper);
 		
 		document.getElementById('CSSFragLinkInput').addEventListener('keyup', function(event){ event.target.value = URL; event.target.select(); }, false);
@@ -312,7 +212,10 @@ function showURLinWindow() {
 	document.getElementById('CSSFragLinkWrapper').className = "";
 	setTimeout(function(){document.getElementById('CSSFragLinkWrapper').className = "active";}, 0);
 	document.getElementById('CSSFragLinkInput').select();
+	
+	return true;
 }
+
 
 function hideURLinWindow(event) {
 	//
@@ -326,4 +229,166 @@ function hideURLinWindow(event) {
 			document.getElementById('CSSFragLinkWrapper').className = "hidden";
 		}, 600);
 	}
+	
+	return true;
 }
+
+
+
+
+//
+//		HELPER FUNCTIONS
+//
+
+function dictionaryToSelector(dictionary) {
+	//
+	// Returns a concatenated string of a dictionary's values, removing the
+	// last character if it's ">".
+	//
+	
+	var string = "";
+	for (var key in dictionary) { string += dictionary[key]; }
+	
+	if (string[string.length - 1] === ">") { return string.substring(0, string.length - 1); }
+	else { return string; }
+}
+
+
+function singleElementWithSelector(selector) {
+	//
+	// Returns true if the selector has only one corresponding element.
+	//
+	
+	return (document.querySelectorAll(selector).length === 1);
+}
+
+
+function firstElementWithSelector(selector, element) {
+	//
+	// Returns true if the first element returned by the selector is the same
+	// as the given element.
+	//
+	
+	return (document.querySelector(selector) === element);
+}
+
+
+function nthIndex(element) {
+	//
+	// Returns an integer representing the element's DOM position amongst its
+	// siblings.
+	//
+	
+	var nodes = element.parentNode.childNodes
+	var count = 1;
+	
+	for (node in nodes) {
+		if (nodes[node] === element) { break; }
+		if (nodes[node].nodeType == 1) { count++; }
+	}
+	
+	return count;
+}
+
+
+function fixImageDimensionsRelatedToElement(element) {
+	//
+	// Walks up the tree from an element repairing any img nodes' height and
+	// width attributes if they aren't properly set in the DOM.
+	//
+	
+	var currentNode = element.parentNode;
+	var imageDimensions;
+	
+	do {
+		var children = currentNode.childNodes;
+		var i = 0;
+		
+		while(child = children.item(i++)) {
+			var childComputedStyle = getComputedStyle(child);
+			if (child.nodeType !== undefined && child.nodeName.toLowerCase() === 'img' && parseInt(childComputedStyle.height) === 0 && parseInt(childComputedStyle.width) === 0) {
+					imageDimensions = new Image();
+					imageDimensions.src = children[child].src;
+					
+					child.style.height = imageDimensions.height + "px !important";
+					child.style.width = imageDimensions.width + "px !important";
+			}
+		}
+	} while (currentNode = currentNode.parentNode);
+	
+	return true;
+}
+
+
+function injectStyles() {
+	//
+	// Injects style.css into the document, if it isn't already there.
+	//
+	
+	if (!document.getElementById('CSSFragStyles')) {
+		var styles = document.createElement('link');
+		styles.rel = 'stylesheet';
+		styles.type = 'test/css';
+		styles.id = 'CSSFragStyles';
+		styles.href = safari.extension.baseURI + 'style.css';
+		
+		document.body.appendChild(styles);
+	}
+	
+	return true;
+}
+
+
+
+
+//
+//		HANDLERS
+//
+
+function handleElementsAreStatic(event) {
+	//
+	// Called by the animation check functions, hands off to handleLoadAndHashChange() when there is a lull in element animation.
+	//
+	
+	handleLoadAndHashChange(event, true);
+	
+	return true;
+} window.addEventListener('elementsAreStatic', handleElementsAreStatic, false);
+
+
+function handleLoadAndHashChange(event, elementsAreStatic) {
+	//
+	// Checks for a fragment link (or any hash, if the user wants highlighting)
+	// on page loads and hash changes, and calls scrollFocusAndHighlight() if
+	// it finds one.
+	//
+	
+	window.settings = safari.self.tab.canLoad(event, 'getSettings');
+	var CSSFragHash = decodeURIComponent(window.location.hash).match(/css\((.+)\)/);
+	
+	if (CSSFragHash) { scrollFocusAndHighlight(CSSFragHash[1], true, elementsAreStatic); }
+	else if (settings.highlightTarget === 'all' && window.location.hash !== '') { scrollFocusAndHighlight(window.location.hash, false, elementsAreStatic); }
+	
+	return true;
+} window.addEventListener('load', handleLoadAndHashChange, false); window.addEventListener('hashchange', handleLoadAndHashChange, false);
+
+
+function handleContextMenu(event) {
+	//
+	// Attaches the "CSSFragTarget" class to the event target, and if it is a
+	// fragment linkable element, sets userInfo.display to true.
+	//
+	
+	var nodeName = event.target.nodeName.toLowerCase();
+	var nodeID = event.target.getAttribute('id');
+	
+	var eventTargets = document.getElementsByClassName("CSSFragTarget"); // Safari doesn't allow passing elements through setContextMenuEventUserInfo.
+	for (var i, length = eventTargets.length; i < length; i++) {
+		eventTargets[i].className = eventTargets[i].className.replace(/ CSSFragTarget/g, "");
+	}
+	event.target.className += " CSSFragTarget";
+	
+	safari.self.tab.setContextMenuEventUserInfo(event, { 'display': (nodeName !== 'body' && nodeName !== 'head' && nodeName !== 'html' && nodeName !== '#document' && (nodeID === null || !nodeID.match(/CSSFrag/g))) });
+	
+	return true;
+} document.addEventListener('contextmenu', handleContextMenu, false);
