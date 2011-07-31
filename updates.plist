@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>Extension Updates</key>
+		<array>
+			<dict>
+				<key>CFBundleIdentifier</key>
+				<string>com.karanlyons.safari.CSSFrag</string>
+				<key>Developer Identifier</key>
+				<string>9X2VKYZAVF</string>
+				<key>CFBundleVersion</key>
+				<string>2.0.0</string>
+				<key>CFBundleShortVersionString</key>
+				<string>2.0</string>
+				<key>URL</key>
+				<string>http://karanlyons.github.com/CSSFrag/CSSFrag.safariextz</string>
+			</dict>
+		</array>
+	</dict>
+</plist>
