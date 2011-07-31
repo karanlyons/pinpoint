@@ -60,7 +60,7 @@ function scrollFocusAndHighlight(selector, isCSSSelector, elementsAreStatic) {
 		highlightBackground.style.top = bounds.top - 5 + "px";
 		
 		var highlight = element.cloneNode(true);
-		highlight.style.cssText = getComputedStyle(element).cssText;
+		highlight = cloneStyles(element, highlight);
 		highlight.id = "CSSFragHighlight";
 		highlight.className = "";
 		
@@ -72,7 +72,7 @@ function scrollFocusAndHighlight(selector, isCSSSelector, elementsAreStatic) {
 		document.body.appendChild(highlightBackground);
 		element.focus();
 		
-		setTimeout(function() { document.body.removeChild(highlightBackground); }, 1600);
+//		setTimeout(function() { document.body.removeChild(highlightBackground); }, 1600);
 	}
 	
 	else { window.scrollTo(bounds.left, bounds.top); }
@@ -355,6 +355,24 @@ function fixImageDimensionsRelatedToElement(element) {
 	} while (currentNode = currentNode.parentNode);
 	
 	return true;
+}
+
+
+function cloneStyles(element, clone) {
+	//
+	// Returns a clone of the given element, including the same styles for it
+	// and its children.
+	//
+	if (element.nodeType === 1) {
+		var children = element.childNodes;
+		clone.style.cssText = getComputedStyle(element).cssText;
+		
+		for (var i = 0; i < children.length; i++) {
+			clone.childNodes[i] = cloneStyles(children[i], clone.childNodes[i]);
+		}
+	}
+	
+	return clone;
 }
 
 
