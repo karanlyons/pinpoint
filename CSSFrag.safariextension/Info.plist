@@ -45,6 +45,8 @@
 			<string>All</string>
 		</dict>
 	</dict>
+	<key>Update Manifest URL</key>
+	<string>http://karanlyons.github.com/CSSFrag/updates.plist</string>
 	<key>Website</key>
 	<string>http://karanlyons.github.com/CSSFrag/</string>
 </dict>
