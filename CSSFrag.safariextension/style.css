@@ -123,7 +123,8 @@ input#CSSFragLinkInput:focus { outline: none; }
 
 #CSSFragHighlight[style] *[style] {
 	-webkit-text-fill-color: #000 !important;
-	-webkit-font-smoothing: antialiased !important;	
+	-webkit-font-smoothing: antialiased !important;
+	pointer-events: none !important;
 }
 
 #CSSFragHighlight.noChildren[style] { padding: 0px 0px 0px 0px !important; }

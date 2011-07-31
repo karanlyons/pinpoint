@@ -72,7 +72,7 @@ function scrollFocusAndHighlight(selector, isCSSSelector, elementsAreStatic) {
 		document.body.appendChild(highlightBackground);
 		element.focus();
 		
-//		setTimeout(function() { document.body.removeChild(highlightBackground); }, 1600);
+		setTimeout(function() { document.body.removeChild(highlightBackground); }, 1600);
 	}
 	
 	else { window.scrollTo(bounds.left, bounds.top); }
