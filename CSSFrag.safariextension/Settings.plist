@@ -40,7 +40,7 @@
 	</dict>
 	<dict>
 		<key>DefaultValue</key>
-		<string>isgd</string>
+		<string>none</string>
 		<key>Key</key>
 		<string>linkShorteningService</string>
 		<key>Title</key>
