@@ -2,19 +2,19 @@
 //		CSSFRAG
 //
 
-function scrollFocusAndHighlight(selector, isCSSSelector, elementsAreStatic) {
+function scrollFocusAndHighlight(selector, isCSSSelector, elementIsStatic) {
 	//
 	// Finds an element in the document via a selector, and optionally scrolls
 	// to and highlights it depending on the user's settings. isCSSSelector is
 	// true if the selector is a CSS Selector (as opposed to an ID).
 	//
 	
-	if (!elementsAreStatic) { // If elementsAreStatic is not true, it means they may be currently animated.
+	if (!elementIsStatic) { // If elementIsStatic is not true, it means they may be currently animated.
 		if (!document.getElementById('CSSFragAnimationChecks')) {
 			var animationChecks = document.createElement('script');
 			animationChecks.type = 'text/javascript';
 			animationChecks.id = 'CSSFragAnimationChecks';
-			animationChecks.innerHTML = 'function checkForAnimation(){if(typeof jQuery==="function"){var a=1;var b=setInterval(function(){var c=$("*:animated").length;if(c<1){a=a-1}else{a=a+1}if(a<1){elementsAreStatic(b)}},100)}else{elementsAreStatic()}}window.addEventListener("checkForAnimation",checkForAnimation,true);function elementsAreStatic(a){window.clearInterval(a);var b=document.createEvent("Event");b.initEvent("elementsAreStatic",true,true);document.dispatchEvent(b)};';
+			animationChecks.innerHTML = 'function checkForAnimation(){var a=document.querySelector(decodeURIComponent(window.location.hash).replace(/#css\\((.+)\\)/,"$1"));if(typeof jQuery==="function"){jQuery(document).ready(function(){var b=10;var c=setInterval(function(){var d=(jQuery(a).filter(":animated").length>0);if(d){b=b+1}else{b=b-1}if(b<1){elementIsStatic(c)}},100)})}else{elementIsStatic()}}window.addEventListener("checkForAnimation",checkForAnimation,true);function elementIsStatic(a){window.clearInterval(a);var b=document.createEvent("Event");b.initEvent("elementIsStatic",true,true);document.dispatchEvent(b)};';
 			document.head.appendChild(animationChecks);
 		}
 		
@@ -70,7 +70,7 @@ function scrollFocusAndHighlight(selector, isCSSSelector, elementsAreStatic) {
 		document.body.appendChild(highlightBackground);
 		element.focus();
 		
-		setTimeout(function() { document.body.removeChild(highlightBackground); }, 1600);
+//		setTimeout(function() { document.body.removeChild(highlightBackground); }, 1600);
 	}
 	
 	else { window.scrollTo(bounds.left, bounds.top); }
@@ -379,18 +379,17 @@ function cloneStyles(element, clone) {
 //		HANDLERS
 //
 
-function handleElementsAreStatic(event) {
+function handleElementIsStatic(event) {
 	//
 	// Called by the animation check functions, hands off to handleLoadAndHashChange() when there is a lull in element animation.
 	//
-	
 	handleLoadAndHashChange(event, true);
 	
 	return true;
-} window.addEventListener('elementsAreStatic', handleElementsAreStatic, false);
+} window.addEventListener('elementIsStatic', handleElementIsStatic, false);
 
 
-function handleLoadAndHashChange(event, elementsAreStatic) {
+function handleLoadAndHashChange(event, elementIsStatic) {
 	//
 	// Checks for a fragment link (or any hash, if the user wants highlighting)
 	// on page loads and hash changes, and calls scrollFocusAndHighlight() if
@@ -400,8 +399,8 @@ function handleLoadAndHashChange(event, elementsAreStatic) {
 	window.settings = safari.self.tab.canLoad(event, 'getSettings');
 	var CSSFragHash = decodeURIComponent(window.location.hash).match(/css\((.+)\)/);
 	
-	if (CSSFragHash) { scrollFocusAndHighlight(CSSFragHash[1], true, elementsAreStatic); }
-	else if (settings.highlightTarget === 'all' && window.location.hash !== '') { scrollFocusAndHighlight(window.location.hash, false, elementsAreStatic); }
+	if (CSSFragHash) { scrollFocusAndHighlight(CSSFragHash[1], true, elementIsStatic); }
+	else if (settings.highlightTarget === 'all' && window.location.hash !== '') { scrollFocusAndHighlight(window.location.hash, false, elementIsStatic); }
 	
 	return true;
 } window.addEventListener('load', handleLoadAndHashChange, false); window.addEventListener('hashchange', handleLoadAndHashChange, false);
