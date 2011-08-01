@@ -3,68 +3,67 @@
 */
 
 #CSSFragLinkWrapper {
-	display: block;
-	position: fixed;
-	z-index: 99999999;
-	height: 100%;
-	width: 100%;
-	top: 0;
-	left: 0;
-	opacity: 0;
-	background-color: rgba(0, 0, 0, 0.25);
-	box-shadow: inset 0px 0px 500px 20px rgba(0, 0, 0, 0.5);
-	-webkit-transition: opacity 0.3s ease-out;
-	pointer-events: auto;
+	display: block !important;
+	position: fixed !important;
+	z-index: 99999999 !important;
+	height: 100% !important;
+	width: 100% !important;
+	top: 0 !important;
+	left: 0 !important;
+	opacity: 0 !important;
+	background-color: rgba(0, 0, 0, 0.25) !important;
+	box-shadow: inset 0px 0px 500px 20px rgba(0, 0, 0, 0.5) !important;
+	-webkit-transition: opacity 0.3s ease-out !important;
+	pointer-events: auto !important;
 }
 
 #CSSFragLinkContainer {
-	display: block;
-	position: absolute;
-	height: 80px;
-	width: 80%;
-	top: 50%;
-	left: 50%;
-	margin-top: -40px;
-	margin-left: -40%;
-	opacity: 0;
-	background-color: #ededed;
-	border-radius: 10px;
-	box-shadow: 0px 0px 0px 10px rgba(25, 25, 25, 0.5), 0px 5px 10px 10px rgba(25, 25, 25, 0.25);
-	-webkit-transform: scale(0);
-	-webkit-transition-property: -webkit-transform, opacity;
-	-webkit-transition-duration: 0.5s, 0.5s;
-	-webkit-transition-timing-function: ease-out, ease-out;
-	background-image: url('./background.png');
+	display: block !important;
+	position: absolute !important;
+	height: 80px !important;
+	width: 80% !important;
+	top: 50% !important;
+	left: 50% !important;
+	margin-top: -40px !important;
+	margin-left: -40% !important;
+	opacity: 0 !important;
+	background-color: #ededed !important;
+	border-radius: 10px !important;
+	box-shadow: 0px 0px 0px 10px rgba(25, 25, 25, 0.5), 0px 5px 10px 10px rgba(25, 25, 25, 0.25) !important;
+	-webkit-transform: scale(0) !important;
+	-webkit-transition-property: -webkit-transform, opacity !important;
+	-webkit-transition-duration: 0.5s, 0.5s !important;
+	-webkit-transition-timing-function: ease-out, ease-out !important;
 }
 
 #CSSFragLinkPadding {
-	padding-left: 10px;
-	padding-right: 10px;
+	padding-left: 10px !important;
+	padding-right: 10px !important;
 }
 
 input#CSSFragLinkInput {
-	display: block;
-	height: 60px;
-	width: 100%;
-	background-color: #d5d5d5;
-	margin: 10px auto;
-	padding: 0;
-	border: none;
-	font: normal normal normal 40px 'Helvetica Neue', Helvetica, 'Lucida Grande', Arial, sans-serif;
-	color: #000;
-	text-align: center;
+	display: block !important;
+	height: 60px !important;
+	width: 100% !important;
+	background-color: #d5d5d5 !important;
+	margin: 10px auto !important;
+	padding: 0 !important;
+	border: none !important;
+	font: normal normal normal 40px 'Helvetica Neue', Helvetica, 'Lucida Grande', Arial, sans-serif !important;
+	color: #000 !important;
+	text-align: center !important;
 }
 
-input#CSSFragLinkInput:focus { outline: none; }
+input#CSSFragLinkInput:focus { outline: none !important; }
 
-#CSSFragLinkWrapper.active { opacity: 1; }
+#CSSFragLinkWrapper.active { opacity: 1 !important; }
 
 #CSSFragLinkWrapper.active > #CSSFragLinkContainer {
-	opacity: 1;
-	-webkit-transform: scale(1);
+	opacity: 1 !important;
+	-webkit-transform: scale(1) !important;
 }
 
-#CSSFragLinkWrapper.hidden { display: none; pointer-events: none; }
+#CSSFragLinkWrapper.hidden { display: none !important; pointer-events: none !important; }
 
 
 /*
@@ -72,21 +71,21 @@ input#CSSFragLinkInput:focus { outline: none; }
 */
 
 #CSSFragHighlightBackground {
-	display: block;
-	position: absolute;
-	overflow: hidden;
-	z-index: 999999999;
-	height: auto;
-	width: auto;
-	opacity: 0;
-	background-image: -webkit-linear-gradient(#f3ec4f, #f0d346);
+	display: block !important;
+	position: absolute !important;
+	overflow: hidden !important;
+	z-index: 999999999 !important;
+	height: auto !important;
+	width: auto !important;
+	opacity: 0 !important;
+	background-image: -webkit-linear-gradient(#f3ec4f, #f0d346) !important;
 	padding: 4px !important;
-	border: 1px solid #f7e74d;
-	border-radius: 5px;
-	box-shadow: 0px 1px 1px 1px rgba(0, 0, 0, 0.40);
-	-webkit-animation-name: CSSFragHighlight;
-	-webkit-animation-duration: 1.6s;
-	pointer-events: none;
+	border: 1px solid #f7e74d !important;
+	border-radius: 5px !important;
+	box-shadow: 0px 1px 1px 1px rgba(0, 0, 0, 0.40) !important;
+	-webkit-animation-name: CSSFragHighlight !important;
+	-webkit-animation-duration: 1.6s !important;
+	pointer-events: none !important;
 }
 
 @-webkit-keyframes CSSFragHighlight {

@@ -54,8 +54,8 @@ function scrollFocusAndHighlight(selector, isCSSSelector, elementIsStatic) {
 		
 		var highlightBackground = document.createElement('div');
 		highlightBackground.id = 'CSSFragHighlightBackground';
-		highlightBackground.style.left = bounds.left - 5 + "px";
-		highlightBackground.style.top = bounds.top - 5 + "px";
+		highlightBackground.style.left = bounds.left - 5 + "px !important";
+		highlightBackground.style.top = bounds.top - 5 + "px !important";
 		
 		var highlight = element.cloneNode(true);
 		highlight = cloneStyles(element, highlight);
