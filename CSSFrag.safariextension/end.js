@@ -93,13 +93,13 @@ function generateFragmentLink(event) {
 		
 		var href = window.location.href.split("#")[0];
 		var currentNode = eventTarget;
-		var currentNodeAttribute = currentNode.getAttribute('id');
+		var currentNodeAttribute = "#" + currentNode.getAttribute('id');
 		var oldSelector = "";
 		var link = "";
 		
-		if (singleElementWithSelector(currentNodeAttribute)) { // If this element has a unique ID, we're done here.
-			if (settings.preferStandardHashes) { link = href + "#" + currentNodeAttribute; }
-			else { link = href + "#css(%23" + currentNodeAttribute + ")"; }
+		if (currentNodeAttribute !== "#" && singleElementWithSelector(currentNodeAttribute)) { // If this element has a unique ID, we're done here.
+			if (settings.preferStandardHashes) { link = href + currentNodeAttribute; }
+			else { link = href + "#css(" + encodeURIComponent(currentNodeAttribute) + ")"; }
 		}
 		
 		else {
@@ -178,8 +178,9 @@ function generateFragmentLink(event) {
 			} while (currentNode = currentNode.parentNode);
 			
 			link = href + "#css(" + encodeURIComponent(dictionaryToSelector(selector)) + ")";
-			if (settings.linkShorteningService !== 'none') { link = shortenLink(link, settings.linkShorteningService, settings.linkShorteningUsername, settings.linkShorteningAPIKey); }
 		}
+		
+		if (settings.linkShorteningService !== 'none') { link = shortenLink(link, settings.linkShorteningService, settings.linkShorteningUsername, settings.linkShorteningAPIKey); }
 		
 		showLinkinWindow(link);
 	}
