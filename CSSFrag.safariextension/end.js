@@ -25,8 +25,6 @@ function scrollFocusAndHighlight(selector, isCSSSelector, elementsAreStatic) {
 		return false;
 	}
 	
-	injectStyles();
-	
 	var element = document.querySelector(selector);
 	if (element === null) { return false; }
 	fixImageDimensionsRelatedToElement(element);
@@ -64,8 +62,8 @@ function scrollFocusAndHighlight(selector, isCSSSelector, elementsAreStatic) {
 		highlight.id = "CSSFragHighlight";
 		highlight.className = "";
 		
-		highlight.style.height = getComputedStyle(element).height + " !important";
-		highlight.style.width = getComputedStyle(element).width + " !important";
+		highlight.style.height += " !important";
+		highlight.style.width += " !important";
 		highlightBackground.appendChild(highlight);
 		
 		window.scrollTo(scroll.left, scroll.top);
@@ -231,8 +229,6 @@ function showLinkinWindow(link) {
 	// Shows the link overlay.
 	//
 	
-	injectStyles();
-	
 	if (document.getElementById('CSSFragLinkWrapper') === null) { // Check to see if the overlay elements are already in the page.
 		linkWrapper = document.createElement('div');
 		linkWrapper.id = "CSSFragLinkWrapper";
@@ -374,25 +370,6 @@ function cloneStyles(element, clone) {
 	}
 	
 	return clone;
-}
-
-
-function injectStyles() {
-	//
-	// Injects style.css into the document, if it isn't already there.
-	//
-	
-	if (!document.getElementById('CSSFragStyles')) {
-		var styles = document.createElement('link');
-		styles.rel = 'stylesheet';
-		styles.type = 'test/css';
-		styles.id = 'CSSFragStyles';
-		styles.href = safari.extension.baseURI + 'style.css';
-		
-		document.body.appendChild(styles);
-	}
-	
-	return true;
 }
 
 
