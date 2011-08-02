@@ -29,6 +29,15 @@ function scrollFocusAndHighlight(selector, isCSSSelector, elementIsStatic) {
 	if (element === null) { return false; }
 	fixImageDimensionsRelatedToElement(element);
 	
+	if (getComputedStyle(element).display === 'none') {
+		var mouseOverEvent = document.createEvent('MouseEvents');
+		mouseOverEvent.initEvent('mouseover', true, false);
+		element.dispatchEvent(mouseOverEvent);
+		var mouseOut = true;
+	}
+	
+	else { mouseOut = false; }
+	
 	var boundingRect = element.getBoundingClientRect();
 	var bounds = {
 		'top': boundingRect.top + document.body.scrollTop,
@@ -64,6 +73,13 @@ function scrollFocusAndHighlight(selector, isCSSSelector, elementIsStatic) {
 		
 		highlight.style.height += " !important";
 		highlight.style.width += " !important";
+		
+		if (mouseOut = true) {
+			var mouseOutEvent = document.createEvent('MouseEvents');
+			mouseOutEvent.initEvent('mouseout', true, false);
+			element.dispatchEvent(mouseOutEvent);
+		}
+		
 		highlightBackground.appendChild(highlight);
 		
 		window.scrollTo(scroll.left, scroll.top);

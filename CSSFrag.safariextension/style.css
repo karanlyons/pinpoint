@@ -116,6 +116,7 @@ input#CSSFragLinkInput:focus { outline: none !important; }
 	bottom: 0 !important;
 	right: 0 !important;
 	margin: 0px 0px 0px 0px !important;
+	opacity: 1 !important;
 	-webkit-text-fill-color: #000 !important;
 	-webkit-font-smoothing: antialiased !important;
 	pointer-events: none !important;
