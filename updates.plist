@@ -6,7 +6,7 @@
 		<array>
 			<dict>
 				<key>CFBundleIdentifier</key>
-				<string>com.karanlyons.safari.CSSFrag</string>
+				<string>com.karanlyons.CSSFrag</string>
 				<key>Developer Identifier</key>
 				<string>9X2VKYZAVF</string>
 				<key>CFBundleVersion</key>
