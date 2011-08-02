@@ -78,6 +78,7 @@ input#CSSFragLinkInput:focus { outline: none !important; }
 	height: auto !important;
 	width: auto !important;
 	opacity: 0 !important;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#f3ec4f), to(#f0d346)) !important;
 	background-image: -webkit-linear-gradient(#f3ec4f, #f0d346) !important;
 	padding: 4px !important;
 	border: 1px solid #f7e74d !important;
