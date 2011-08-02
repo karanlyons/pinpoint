@@ -139,7 +139,7 @@ function generateFragmentLink(event) {
 				// ID
 				currentNodeAttribute = currentNode.getAttribute('id');
 				if (currentNodeAttribute !== null && currentNodeAttribute !== '') {
-					selector.id = "#" + currentNodeAttribute; // We could fold this into the for loop and do [id='foobar'] instead, but that's...uglier.
+					selector['id'] = "#" + currentNodeAttribute; // We could fold this into the for loop and do [id='foobar'] instead, but that's...uglier.
 					if (firstElementWithSelector(dictionaryToSelector(selector), eventTarget)) { break; }
 				}
 				
@@ -149,7 +149,7 @@ function generateFragmentLink(event) {
 					currentNodeAttribute = currentNodeAttribute.split(" ");
 					
 					for (var CSSClass in currentNodeAttribute) { // We add each class one by one and check the selector.
-						selector.class += "." + currentNodeAttribute[CSSClass];
+						selector['class'] += "." + currentNodeAttribute[CSSClass];
 						if (firstElementWithSelector(dictionaryToSelector(selector), eventTarget)) { break; }
 					}
 					if (firstElementWithSelector(dictionaryToSelector(selector), eventTarget)) { break; }
