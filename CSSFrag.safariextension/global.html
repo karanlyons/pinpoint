@@ -38,7 +38,8 @@
 				'highlightTarget': safari.extension.settings.highlightTarget,
 				'linkShorteningService': safari.extension.settings.linkShorteningService,
 				'linkShorteningUsername': safari.extension.settings.linkShorteningUsername,
-				'linkShorteningAPIKey': safari.extension.secureSettings.linkShorteningAPIKey
+				'linkShorteningAPIKey': safari.extension.secureSettings.linkShorteningAPIKey,
+				'currentURL': safari.application.activeBrowserWindow.activeTab.url
 			};
 		}
 	} safari.application.addEventListener('message', handleMessage, true);

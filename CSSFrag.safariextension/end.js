@@ -105,7 +105,7 @@ function generateFragmentLink(event) {
 		var eventTarget = document.getElementsByClassName("CSSFragTarget")[0];
 		eventTarget.className = eventTarget.className.replace(/ CSSFragTarget/g, "");
 		
-		var href = window.location.href.split("#")[0];
+		var href = settings.currentURL.split("#")[0];
 		var currentNode = eventTarget;
 		var currentNodeAttribute = "#" + currentNode.getAttribute('id');
 		var oldSelector = "";
