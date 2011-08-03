@@ -1,5 +1,5 @@
 //
-//		CSSFRAG
+//		PINPOINT
 //
 
 function scrollFocusAndHighlight(selector, isCSSSelector, elementIsStatic) {
@@ -10,10 +10,10 @@ function scrollFocusAndHighlight(selector, isCSSSelector, elementIsStatic) {
 	//
 	
 	if (!elementIsStatic) { // If elementIsStatic is not true, it means they may be currently animated.
-		if (!document.getElementById('CSSFragAnimationChecks')) {
+		if (!document.getElementById('pinpointAnimationChecks')) {
 			var animationChecks = document.createElement('script');
 			animationChecks.type = 'text/javascript';
-			animationChecks.id = 'CSSFragAnimationChecks';
+			animationChecks.id = 'pinpointAnimationChecks';
 			animationChecks.innerHTML = 'function checkForAnimation(){var a=document.querySelector(decodeURIComponent(window.location.hash).replace(/#css\\((.+)\\)/,"$1"));if(typeof jQuery==="function"){jQuery(document).ready(function(){var b=10;var c=setInterval(function(){var d=(jQuery(a).filter(":animated").length>0);if(d){b=b+1}else{b=b-1}if(b<1){elementIsStatic(c)}},100)})}else{elementIsStatic()}}window.addEventListener("checkForAnimation",checkForAnimation,true);function elementIsStatic(a){window.clearInterval(a);var b=document.createEvent("Event");b.initEvent("elementIsStatic",true,true);document.dispatchEvent(b)};';
 			document.head.appendChild(animationChecks);
 		}
@@ -46,7 +46,7 @@ function scrollFocusAndHighlight(selector, isCSSSelector, elementIsStatic) {
 		'width': boundingRect.width
 	};
 	
-	if (settings.highlightTarget !== 'none' && (settings.highlightTarget === 'all' || (isCSSSelector && settings.highlightTarget === 'frag'))) {
+	if (settings.highlightTarget !== 'none' && (settings.highlightTarget === 'all' || (isCSSSelector && settings.highlightTarget === 'pinpoints'))) {
 		if ((document.body.scrollLeft <= boundingRect.left) && (boundingRect.left <= document.body.scrollLeft + window.innerWidth) && (document.body.scrollTop <= boundingRect.top) && (boundingRect.top <= document.body.scrollTop + window.innerHeight) && (document.body.scrollLeft <= boundingRect.left + boundingRect.width) && (boundingRect.left + boundingRect.width <= document.body.scrollLeft + window.innerWidth) && (document.body.scrollTop <= boundingRect.top + boundingRect.height) && (boundingRect.top + boundingRect.height <= document.body.scrollTop + window.innerHeight)) {
 			var scroll = {
 				'top': document.body.scrollTop,
@@ -62,13 +62,13 @@ function scrollFocusAndHighlight(selector, isCSSSelector, elementIsStatic) {
 		}
 		
 		var highlightBackground = document.createElement('div');
-		highlightBackground.id = 'CSSFragHighlightBackground';
+		highlightBackground.id = 'pinpointHighlightBackground';
 		highlightBackground.style.left = bounds.left - 5 + "px !important";
 		highlightBackground.style.top = bounds.top - 5 + "px !important";
 		
 		var highlight = element.cloneNode(true);
 		highlight = cloneStyles(element, highlight);
-		highlight.id = "CSSFragHighlight";
+		highlight.id = "pinpointHighlight";
 		highlight.className = "";
 		
 		highlight.style.height += " !important";
@@ -95,15 +95,15 @@ function scrollFocusAndHighlight(selector, isCSSSelector, elementIsStatic) {
 }
 
 
-function generateFragmentLink(event) {
+function createPinpoint(event) {
 	//
-	// Generates fragment links before sending them to showLinkinWindow().
+	// Generates pinpoints before sending them to showLinkinWindow().
 	//
 	
-	if (event.name === 'generateFragmentLink') {
+	if (event.name === 'createPinpoint') {
 		window.settings = safari.self.tab.canLoad(event, 'getSettings');
-		var eventTarget = document.getElementsByClassName("CSSFragTarget")[0];
-		eventTarget.className = eventTarget.className.replace(/ CSSFragTarget/g, "");
+		var eventTarget = document.getElementsByClassName("pinpointTarget")[0];
+		eventTarget.className = eventTarget.className.replace(/ pinpointTarget/g, "");
 		
 		var href = settings.currentURL.split("#")[0];
 		var currentNode = eventTarget;
@@ -200,7 +200,7 @@ function generateFragmentLink(event) {
 	}
 	
 	return true;
-} safari.self.addEventListener('message', generateFragmentLink, false);
+} safari.self.addEventListener('message', createPinpoint, false);
 
 
 function shortenLink(link, service, username, APIKey) {
@@ -245,25 +245,25 @@ function showLinkinWindow(link) {
 	// Shows the link overlay.
 	//
 	
-	if (document.getElementById('CSSFragLinkWrapper') === null) { // Check to see if the overlay elements are already in the page.
+	if (document.getElementById('pinpointLinkWrapper') === null) { // Check to see if the overlay elements are already in the page.
 		linkWrapper = document.createElement('div');
-		linkWrapper.id = "CSSFragLinkWrapper";
+		linkWrapper.id = "pinpointLinkWrapper";
 		linkWrapper.className = "hidden";
 		linkWrapper.addEventListener('click', hideLinkinWindow, false);
-		linkWrapper.innerHTML = '<div id="CSSFragLinkContainer"><div id="CSSFragLinkPadding"><input id="CSSFragLinkInput" name="CSSFragLinkInput" value="" spellcheck="false" autofocus></div></div></div>';
+		linkWrapper.innerHTML = '<div id="pinpointLinkContainer"><div id="pinpointLinkPadding"><input id="pinpointLinkInput" name="pinpointLinkInput" value="" spellcheck="false" autofocus></div></div></div>';
 		document.body.appendChild(linkWrapper);
 		
-		document.getElementById('CSSFragLinkInput').addEventListener('keyup', function(event){ event.target.value = link; event.target.select(); }, false);
+		document.getElementById('pinpointLinkInput').addEventListener('keyup', function(event){ event.target.value = link; event.target.select(); }, false);
 		document.addEventListener('copy', hideLinkinWindow, false);
 		document.addEventListener('cut', hideLinkinWindow, false);
 	}
 	
-	linkInput = document.getElementById('CSSFragLinkInput');
+	linkInput = document.getElementById('pinpointLinkInput');
 	linkInput.value = link;
 	
-	linkWrapper = document.getElementById('CSSFragLinkWrapper');
+	linkWrapper = document.getElementById('pinpointLinkWrapper');
 	linkWrapper.className = "";
-	setTimeout(function() { document.getElementById('CSSFragLinkWrapper').className = "active"; }, 0);
+	setTimeout(function() { document.getElementById('pinpointLinkWrapper').className = "active"; }, 0);
 	linkInput.select();
 	
 	return true;
@@ -272,11 +272,12 @@ function showLinkinWindow(link) {
 
 function hideLinkinWindow(event) {
 	//
-	// Hides the link overlay when the user cuts or copies the link, or clicks outside of the main overlay.
+	// Hides the link overlay when the user cuts or copies the link, or clicks
+	// outside of the main overlay.
 	//
 	
-	if (event.type === 'copy' || event.type === 'cut' || event.target.getAttribute('id') === 'CSSFragLinkWrapper') {
-		linkWrapper = document.getElementById('CSSFragLinkWrapper');
+	if (event.type === 'copy' || event.type === 'cut' || event.target.getAttribute('id') === 'pinpointLinkWrapper') {
+		linkWrapper = document.getElementById('pinpointLinkWrapper');
 		linkWrapper.className = "";
 		
 		setTimeout(function() { linkWrapper.className = "hidden"; }, 600); }
@@ -293,8 +294,8 @@ function hideLinkinWindow(event) {
 
 function dictionaryToSelector(dictionary) {
 	//
-	// Returns a concatenated string of a dictionary's values, removing the
-	// last character if it's ">".
+	// Returns a concatenated string of a dictionary's values, removing the last
+	// character if it's ">".
 	//
 	
 	var string = "";
@@ -316,8 +317,8 @@ function singleElementWithSelector(selector) {
 
 function firstElementWithSelector(selector, element) {
 	//
-	// Returns true if the first element returned by the selector is the same
-	// as the given element.
+	// Returns true if the first element returned by the selector is the same as
+	// the given element.
 	//
 	
 	return (document.querySelector(selector) === element);
@@ -397,7 +398,8 @@ function cloneStyles(element, clone) {
 
 function handleElementIsStatic(event) {
 	//
-	// Called by the animation check functions, hands off to handleLoadAndHashChange() when there is a lull in element animation.
+	// Called by the animation check functions, hands off to
+	// handleLoadAndHashChange() when there is a lull in element animation.
 	//
 	handleLoadAndHashChange(event, true);
 	
@@ -407,15 +409,15 @@ function handleElementIsStatic(event) {
 
 function handleLoadAndHashChange(event, elementIsStatic) {
 	//
-	// Checks for a fragment link (or any hash, if the user wants highlighting)
-	// on page loads and hash changes, and calls scrollFocusAndHighlight() if
-	// it finds one.
+	// Checks for a pinpoint (or any hash, if the user wants highlighting) on
+	// page loads and hash changes, and calls scrollFocusAndHighlight() if it
+	// finds one.
 	//
 	
 	window.settings = safari.self.tab.canLoad(event, 'getSettings');
-	var CSSFragHash = decodeURIComponent(window.location.hash).match(/css\((.+)\)/);
+	var pinpoint = decodeURIComponent(window.location.hash).match(/css\((.+)\)/);
 	
-	if (CSSFragHash) { scrollFocusAndHighlight(CSSFragHash[1], true, elementIsStatic); }
+	if (pinpoint) { scrollFocusAndHighlight(pinpoint[1], true, elementIsStatic); }
 	else if (settings.highlightTarget === 'all' && window.location.hash !== '') { scrollFocusAndHighlight(window.location.hash, false, elementIsStatic); }
 	
 	return true;
@@ -424,20 +426,20 @@ function handleLoadAndHashChange(event, elementIsStatic) {
 
 function handleContextMenu(event) {
 	//
-	// Attaches the "CSSFragTarget" class to the event target, and if it is a
-	// fragment linkable element, sets userInfo.display to true.
+	// Attaches the "pinpointTarget" class to the event target, and if it is a
+	// linkable element, sets userInfo.display to true.
 	//
 	
 	var nodeName = event.target.nodeName.toLowerCase();
 	var nodeID = event.target.getAttribute('id');
 	
-	var eventTargets = document.getElementsByClassName("CSSFragTarget"); // Safari doesn't allow passing elements through setContextMenuEventUserInfo.
+	var eventTargets = document.getElementsByClassName("pinpointTarget"); // Safari doesn't allow passing elements through setContextMenuEventUserInfo.
 	for (var i = 0, length = eventTargets.length; i < length; i++) {
-		eventTargets[i].className = eventTargets[i].className.replace(/ CSSFragTarget/g, "");
+		eventTargets[i].className = eventTargets[i].className.replace(/ pinpointTarget/g, "");
 	}
-	event.target.className += " CSSFragTarget";
+	event.target.className += " pinpointTarget";
 	
-	safari.self.tab.setContextMenuEventUserInfo(event, { 'display': (nodeName !== 'body' && nodeName !== 'head' && nodeName !== 'html' && nodeName !== '#document' && (nodeID === null || !nodeID.match(/CSSFrag/g))) });
+	safari.self.tab.setContextMenuEventUserInfo(event, { 'display': (nodeName !== 'body' && nodeName !== 'head' && nodeName !== 'html' && nodeName !== '#document' && (nodeID === null || !nodeID.match(/pinpoint/g))) });
 	
 	return true;
 } document.addEventListener('contextmenu', handleContextMenu, false);

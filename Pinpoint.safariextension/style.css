@@ -2,7 +2,7 @@
 //	Link Overlay
 */
 
-#CSSFragLinkWrapper {
+#pinpointLinkWrapper {
 	display: block !important;
 	position: fixed !important;
 	z-index: 99999999 !important;
@@ -17,7 +17,7 @@
 	pointer-events: auto !important;
 }
 
-#CSSFragLinkContainer {
+#pinpointLinkContainer {
 	display: block !important;
 	position: absolute !important;
 	height: 80px !important;
@@ -36,12 +36,12 @@
 	-webkit-transition-timing-function: ease-out, ease-out !important;
 }
 
-#CSSFragLinkPadding {
+#pinpointLinkPadding {
 	padding-left: 10px !important;
 	padding-right: 10px !important;
 }
 
-input#CSSFragLinkInput {
+input#pinpointLinkInput {
 	display: block !important;
 	height: 60px !important;
 	width: 100% !important;
@@ -54,23 +54,23 @@ input#CSSFragLinkInput {
 	text-align: center !important;
 }
 
-input#CSSFragLinkInput:focus { outline: none !important; }
+input#pinpointLinkInput:focus { outline: none !important; }
 
-#CSSFragLinkWrapper.active { opacity: 1 !important; }
+#pinpointLinkWrapper.active { opacity: 1 !important; }
 
-#CSSFragLinkWrapper.active > #CSSFragLinkContainer {
+#pinpointLinkWrapper.active > #pinpointLinkContainer {
 	opacity: 1 !important;
 	-webkit-transform: scale(1) !important;
 }
 
-#CSSFragLinkWrapper.hidden { display: none !important; pointer-events: none !important; }
+#pinpointLinkWrapper.hidden { display: none !important; pointer-events: none !important; }
 
 
 /*
 //	Element Highlighting
 */
 
-#CSSFragHighlightBackground {
+#pinpointHighlightBackground {
 	display: block !important;
 	position: absolute !important;
 	overflow: hidden !important;
@@ -84,12 +84,12 @@ input#CSSFragLinkInput:focus { outline: none !important; }
 	border: 1px solid #f7e74d !important;
 	border-radius: 5px !important;
 	box-shadow: 0px 1px 1px 1px rgba(0, 0, 0, 0.40) !important;
-	-webkit-animation-name: CSSFragHighlight !important;
+	-webkit-animation-name: pinpointHighlight !important;
 	-webkit-animation-duration: 1.6s !important;
 	pointer-events: none !important;
 }
 
-@-webkit-keyframes CSSFragHighlight {
+@-webkit-keyframes pinpointHighlight {
 	0% {
 		-webkit-transform: scale(0);
 		opacity: 1;
@@ -108,7 +108,7 @@ input#CSSFragLinkInput:focus { outline: none !important; }
 	}
 }
 
-#CSSFragHighlight[style] {
+#pinpointHighlight[style] {
 	position: relative !important;
 	z-index: 9999999999 !important;
 	top: 0 !important;
@@ -122,10 +122,10 @@ input#CSSFragLinkInput:focus { outline: none !important; }
 	pointer-events: none !important;
 }
 
-#CSSFragHighlight[style] *[style] {
+#pinpointHighlight[style] *[style] {
 	-webkit-text-fill-color: #000 !important;
 	-webkit-font-smoothing: antialiased !important;
 	pointer-events: none !important;
 }
 
-#CSSFragHighlight.noChildren[style] { padding: 0px 0px 0px 0px !important; }
+#pinpointHighlight.noChildren[style] { padding: 0px 0px 0px 0px !important; }

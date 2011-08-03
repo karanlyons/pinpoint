@@ -7,9 +7,9 @@
 	<key>Builder Version</key>
 	<string>7534.48.3</string>
 	<key>CFBundleDisplayName</key>
-	<string>CSSFrag</string>
+	<string>Pinpoint</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.karanlyons.CSSFrag</string>
+	<string>com.karanlyons.pinpoint</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
@@ -36,7 +36,7 @@
 		</array>
 	</dict>
 	<key>Description</key>
-	<string>Allows linking to any part of a webpage.</string>
+	<string>Link anywhere.</string>
 	<key>ExtensionInfoDictionaryVersion</key>
 	<string>1.0</string>
 	<key>Permissions</key>
@@ -50,8 +50,8 @@
 		</dict>
 	</dict>
 	<key>Update Manifest URL</key>
-	<string>http://karanlyons.github.com/CSSFrag/updates.plist</string>
+	<string>http://karanlyons.github.com/pinpoint/updates.plist</string>
 	<key>Website</key>
-	<string>http://karanlyons.github.com/CSSFrag/</string>
+	<string>http://karanlyons.github.com/pinpoint/</string>
 </dict>
 </plist>

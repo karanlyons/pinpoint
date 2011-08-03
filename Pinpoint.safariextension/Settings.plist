@@ -14,7 +14,7 @@
 	</dict>
 	<dict>
 		<key>DefaultValue</key>
-		<string>frag</string>
+		<string>pinpoints</string>
 		<key>Key</key>
 		<string>highlightTarget</string>
 		<key>Title</key>
@@ -22,15 +22,15 @@
 		<key>Titles</key>
 		<array>
 			<string>Highlight All Targets</string>
-			<string>Highlight CSSFrag Targets</string>
-			<string>Don't Highlight Targets</string>
+			<string>Highlight Pinpoints</string>
+			<string>Don't Highlight Anything</string>
 		</array>
 		<key>Type</key>
 		<string>PopUpButton</string>
 		<key>Values</key>
 		<array>
 			<string>all</string>
-			<string>frag</string>
+			<string>pinpoints</string>
 			<string>none</string>
 		</array>
 	</dict>
@@ -47,7 +47,7 @@
 		<string>Link Shortening</string>
 		<key>Titles</key>
 		<array>
-			<string>Don't Shorten Links</string>
+			<string>Don't Shorten Pinpoints</string>
 			<string>bit.ly</string>
 			<string>is.gd</string>
 		</array>

@@ -10,19 +10,19 @@
 		//
 		
 		if (event.userInfo && event.userInfo.display) {
-			event.contextMenu.appendContextMenuItem('generateFragmentLink', "Generate Fragment Link");
+			event.contextMenu.appendContextMenuItem('createPinpoint', "Create Pinpoint");
 		}
 	} safari.application.addEventListener('contextmenu', handleContextMenu, false);
 
 
 	function handleCommand(event) {
 		//
-		// Calls end.js' handleMessage() to generate a fragment link if the
-		// user selects the context menu item.
+		// Calls end.js' handleMessage() to create a pinpoint if the user
+		// selects the context menu item.
 		//
 		
-		if (event.command === 'generateFragmentLink') {
-			safari.application.activeBrowserWindow.activeTab.page.dispatchMessage('generateFragmentLink');
+		if (event.command === 'createPinpoint') {
+			safari.application.activeBrowserWindow.activeTab.page.dispatchMessage('createPinpoint');
 		}
 	} safari.application.addEventListener('command', handleCommand, false);
 
