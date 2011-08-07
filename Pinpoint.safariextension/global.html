@@ -10,19 +10,19 @@
 		//
 		
 		if (event.userInfo && event.userInfo.display) {
-			event.contextMenu.appendContextMenuItem('createPinpoint', "Create Pinpoint");
+			event.contextMenu.appendContextMenuItem('createPin', "Create Pin");
 		}
 	} safari.application.addEventListener('contextmenu', handleContextMenu, false);
 
 
 	function handleCommand(event) {
 		//
-		// Calls end.js' handleMessage() to create a pinpoint if the user
-		// selects the context menu item.
+		// Calls end.js' handleMessage() to create a pin if the user selects
+		// the context menu item.
 		//
 		
-		if (event.command === 'createPinpoint') {
-			safari.application.activeBrowserWindow.activeTab.page.dispatchMessage('createPinpoint');
+		if (event.command === 'createPin') {
+			safari.application.activeBrowserWindow.activeTab.page.dispatchMessage('createPin');
 		}
 	} safari.application.addEventListener('command', handleCommand, false);
 

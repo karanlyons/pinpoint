@@ -46,7 +46,7 @@ function scrollFocusAndHighlight(selector, isCSSSelector, elementIsStatic) {
 		'width': boundingRect.width
 	};
 	
-	if (settings.highlightTarget !== 'none' && (settings.highlightTarget === 'all' || (isCSSSelector && settings.highlightTarget === 'pinpoints'))) {
+	if (settings.highlightTarget !== 'none' && (settings.highlightTarget === 'all' || (isCSSSelector && settings.highlightTarget === 'pins'))) {
 		if ((document.body.scrollLeft <= boundingRect.left) && (boundingRect.left <= document.body.scrollLeft + window.innerWidth) && (document.body.scrollTop <= boundingRect.top) && (boundingRect.top <= document.body.scrollTop + window.innerHeight) && (document.body.scrollLeft <= boundingRect.left + boundingRect.width) && (boundingRect.left + boundingRect.width <= document.body.scrollLeft + window.innerWidth) && (document.body.scrollTop <= boundingRect.top + boundingRect.height) && (boundingRect.top + boundingRect.height <= document.body.scrollTop + window.innerHeight)) {
 			var scroll = {
 				'top': document.body.scrollTop,
@@ -95,12 +95,12 @@ function scrollFocusAndHighlight(selector, isCSSSelector, elementIsStatic) {
 }
 
 
-function createPinpoint(event) {
+function createPin(event) {
 	//
-	// Generates pinpoints before sending them to showLinkinWindow().
+	// Generates pins before sending them to showLinkinWindow().
 	//
 	
-	if (event.name === 'createPinpoint') {
+	if (event.name === 'createPin') {
 		window.settings = safari.self.tab.canLoad(event, 'getSettings');
 		var eventTarget = document.getElementsByClassName("pinpointTarget")[0];
 		eventTarget.className = eventTarget.className.replace(/ pinpointTarget/g, "");
@@ -109,11 +109,11 @@ function createPinpoint(event) {
 		var currentNode = eventTarget;
 		var currentNodeAttribute = "#" + currentNode.getAttribute('id');
 		var oldSelector = "";
-		var link = "";
+		var pin = "";
 		
 		if (currentNodeAttribute !== "#" && singleElementWithSelector(currentNodeAttribute)) { // If this element has a unique ID, we're done here.
-			if (settings.preferStandardHashes) { link = href + currentNodeAttribute; }
-			else { link = href + "#css(" + encodeURIComponent(currentNodeAttribute) + ")"; }
+			if (settings.preferStandardHashes) { pin = href + currentNodeAttribute; }
+			else { pin = href + "#css(" + encodeURIComponent(currentNodeAttribute) + ")"; }
 		}
 		
 		else {
@@ -191,16 +191,16 @@ function createPinpoint(event) {
 				oldSelector = dictionaryToSelector(selector);
 			} while (currentNode = currentNode.parentNode);
 			
-			link = href + "#css(" + encodeURIComponent(dictionaryToSelector(selector)) + ")";
+			pin = href + "#css(" + encodeURIComponent(dictionaryToSelector(selector)) + ")";
 		}
 		
-		if (settings.linkShorteningService !== 'none') { link = shortenLink(link, settings.linkShorteningService, settings.linkShorteningUsername, settings.linkShorteningAPIKey); }
+		if (settings.linkShorteningService !== 'none') { pin = shortenLink(pin, settings.linkShorteningService, settings.linkShorteningUsername, settings.linkShorteningAPIKey); }
 		
-		showLinkinWindow(link);
+		showLinkinWindow(pin);
 	}
 	
 	return true;
-} safari.self.addEventListener('message', createPinpoint, false);
+} safari.self.addEventListener('message', createPin, false);
 
 
 function shortenLink(link, service, username, APIKey) {
@@ -377,6 +377,7 @@ function cloneStyles(element, clone) {
 	// Returns a clone of the given element, including the same styles for it
 	// and its children.
 	//
+	
 	if (element.nodeType === 1) {
 		var children = element.childNodes;
 		clone.style.cssText = getComputedStyle(element).cssText;
@@ -401,6 +402,7 @@ function handleElementIsStatic(event) {
 	// Called by the animation check functions, hands off to
 	// handleLoadAndHashChange() when there is a lull in element animation.
 	//
+	
 	handleLoadAndHashChange(event, true);
 	
 	return true;
@@ -409,15 +411,15 @@ function handleElementIsStatic(event) {
 
 function handleLoadAndHashChange(event, elementIsStatic) {
 	//
-	// Checks for a pinpoint (or any hash, if the user wants highlighting) on
+	// Checks for a pin (or any hash, if the user wants highlighting) on
 	// page loads and hash changes, and calls scrollFocusAndHighlight() if it
 	// finds one.
 	//
 	
 	window.settings = safari.self.tab.canLoad(event, 'getSettings');
-	var pinpoint = decodeURIComponent(window.location.hash).match(/css\((.+)\)/);
+	var pin = decodeURIComponent(window.location.hash).match(/css\((.+)\)/);
 	
-	if (pinpoint) { scrollFocusAndHighlight(pinpoint[1], true, elementIsStatic); }
+	if (pin) { scrollFocusAndHighlight(pin[1], true, elementIsStatic); }
 	else if (settings.highlightTarget === 'all' && window.location.hash !== '') { scrollFocusAndHighlight(window.location.hash, false, elementIsStatic); }
 	
 	return true;

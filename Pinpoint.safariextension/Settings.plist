@@ -14,7 +14,7 @@
 	</dict>
 	<dict>
 		<key>DefaultValue</key>
-		<string>pinpoints</string>
+		<string>pins</string>
 		<key>Key</key>
 		<string>highlightTarget</string>
 		<key>Title</key>
@@ -22,7 +22,7 @@
 		<key>Titles</key>
 		<array>
 			<string>Highlight All Targets</string>
-			<string>Highlight Pinpoints</string>
+			<string>Highlight Pins</string>
 			<string>Don't Highlight Anything</string>
 		</array>
 		<key>Type</key>
@@ -30,7 +30,7 @@
 		<key>Values</key>
 		<array>
 			<string>all</string>
-			<string>pinpoints</string>
+			<string>pins</string>
 			<string>none</string>
 		</array>
 	</dict>
@@ -47,7 +47,7 @@
 		<string>Link Shortening</string>
 		<key>Titles</key>
 		<array>
-			<string>Don't Shorten Pinpoints</string>
+			<string>Don't Shorten Pins</string>
 			<string>bit.ly</string>
 			<string>is.gd</string>
 		</array>

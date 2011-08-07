@@ -4,9 +4,9 @@
 ## Usage
 After installing Pinpoint (download and double click on the .safariextz file), Safari will automatically take you to the part of the page the link points to (just like a normal anchor link).
 
-To create your own pinpoints, simply right click on any element on the page, and select "Create Pinpoint" from the menu.
+To create your own pins, simply right click on any element on the page, and select "Create Pin" from the menu.
 
-Don't worry, people who don't have Pinpoint installed will still be able to use your pinpoints; they'll just work like a normal link.
+Don't worry, people who don't have Pinpoint installed will still be able to use your pinss; they'll just work like a normal link.
 
 ## Settings
 #### Prefer Standard Hashes
@@ -14,7 +14,7 @@ When checked, Pinpoint will generate standard fragment identifiers when the elem
 
 ### Highlighting
 #### Highlighting Targets
-Allows you to choose which targets you wish to be highlighted. By default, Pinpoint will only highlight targets identified by pinpoints. You can instead have all identified targets highlighted, or none at all.
+Allows you to choose which targets you wish to be highlighted. By default, Pinpoint will only highlight targets identified by pins. You can instead have all identified targets highlighted, or none at all.
 
 ### Link Shortening
 #### Link Shortening
@@ -32,7 +32,7 @@ Check out the Pinpoint plugins for [Chrome](https://github.com/cheeaun/CSSFrag/)
 ## To Do
 * Improve link shortening support
 * Fix element positioning incorrectly without any hint of why in the box model ([Example](http://xkcd.com/932/#css(img%5Bsrc%3D'http%3A%2F%2Fimgs.xkcd.com%2Fcomics%2Fcia.png'%5D\)) (Check the box model for #PinpointHighlightBackground and #PinpointHighlight)).
-* Experiment with Pinpoint hashes on top of website hashes (support for the terrible hash bang)
+* Experiment with pins on top of website hashes (support for the terrible hash bang)
 
 ## Credit Where It's Due
 Pinpoint is built on top of the fantastic work on the original Safari extension by [Shaun Inman](http://shauninman.com/archive/2011/07/25/cssfrag), and the proposal for [CSS selectors as fragment identifiers](http://simonstl.com/articles/cssFragID.html) by [Simon St.Laurent](http://simonstl.com/) and [Eric Meyer](http://meyerweb.com/).

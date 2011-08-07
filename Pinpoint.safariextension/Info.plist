@@ -52,6 +52,6 @@
 	<key>Update Manifest URL</key>
 	<string>http://karanlyons.github.com/pinpoint/updates.plist</string>
 	<key>Website</key>
-	<string>http://karanlyons.github.com/pinpoint/</string>
+	<string>http://karanlyons.com/pinpoint/</string>
 </dict>
 </plist>
