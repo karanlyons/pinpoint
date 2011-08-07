@@ -5,7 +5,7 @@
 #pinpointLinkWrapper {
 	display: block !important;
 	position: fixed !important;
-	z-index: 99999999 !important;
+	z-index: 2147483647 !important;
 	height: 100% !important;
 	width: 100% !important;
 	top: 0 !important;
@@ -74,7 +74,7 @@ input#pinpointLinkInput:focus { outline: none !important; }
 	display: block !important;
 	position: absolute !important;
 	overflow: hidden !important;
-	z-index: 999999999 !important;
+	z-index: 2147483647 !important;
 	height: auto !important;
 	width: auto !important;
 	opacity: 0 !important;
@@ -113,7 +113,7 @@ input#pinpointLinkInput:focus { outline: none !important; }
 
 #pinpointHighlight[style] {
 	position: relative !important;
-	z-index: 9999999999 !important;
+	z-index: 2147483647 !important;
 	top: 0 !important;
 	left: 0 !important;
 	bottom: 0 !important;
