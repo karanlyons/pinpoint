@@ -92,12 +92,15 @@ input#pinpointLinkInput:focus { outline: none !important; }
 @-webkit-keyframes pinpointHighlight {
 	0% {
 		-webkit-transform: scale(0);
+		opacity: 0;
+	}
+	5% {
 		opacity: 1;
 	}
-	12.5% {
-		-webkit-transform: scale(1.25);
+	10% {
+		-webkit-transform: scale(1.425);
 	}
-	25% {
+	30% {
 		-webkit-transform: scale(1);
 	}
 	75% {
