@@ -29,7 +29,7 @@ function scrollFocusAndHighlight(selector, isCSSSelector, elementIsStatic) {
 	if (element === null) { return false; }
 	fixImageDimensionsRelatedToElement(element);
 	
-	if (getComputedStyle(element).display === 'none') {
+	if (getComputedStyle(element).display === 'none' && settings.highlightTarget !== 'none') {
 		var mouseOverEvent = document.createEvent('MouseEvents');
 		mouseOverEvent.initEvent('mouseover', true, false);
 		element.dispatchEvent(mouseOverEvent);
