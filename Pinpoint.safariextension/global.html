@@ -34,7 +34,6 @@
 		
 		if (event.name === 'canLoad') { // This is a hack to send settings to end.js. canLoad is the only synchronous messaging event.
 		 	event.message = {
-				'preferStandardHashes': safari.extension.settings.preferStandardHashes,
 				'highlightTarget': safari.extension.settings.highlightTarget,
 				'linkShorteningService': safari.extension.settings.linkShorteningService,
 				'linkShorteningUsername': safari.extension.settings.linkShorteningUsername,

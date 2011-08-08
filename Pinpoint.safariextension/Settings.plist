@@ -4,16 +4,6 @@
 <array>
 	<dict>
 		<key>DefaultValue</key>
-		<true/>
-		<key>Key</key>
-		<string>preferStandardHashes</string>
-		<key>Title</key>
-		<string>Prefer Standard Hashes</string>
-		<key>Type</key>
-		<string>CheckBox</string>
-	</dict>
-	<dict>
-		<key>DefaultValue</key>
 		<string>pins</string>
 		<key>Key</key>
 		<string>highlightTarget</string>

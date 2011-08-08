@@ -9,9 +9,6 @@ To create your own pins, simply right click on any element on the page, and sele
 Don't worry, people who don't have Pinpoint installed will still be able to use your pinss; they'll just work like a normal link.
 
 ## Settings
-#### Prefer Standard Hashes
-When checked, Pinpoint will generate standard fragment identifiers when the element has a unique ID. These links will take people to exactly where you linked on the page, even without Pinpoint.
-
 ### Highlighting
 #### Highlighting Targets
 Allows you to choose which targets you wish to be highlighted. By default, Pinpoint will only highlight targets identified by pins. You can instead have all identified targets highlighted, or none at all.

@@ -112,8 +112,7 @@ function createPin(event) {
 		var pin = "";
 		
 		if (currentNodeAttribute !== "#" && singleElementWithSelector(currentNodeAttribute)) { // If this element has a unique ID, we're done here.
-			if (settings.preferStandardHashes) { pin = href + currentNodeAttribute; }
-			else { pin = href + "#css(" + encodeURIComponent(currentNodeAttribute) + ")"; }
+			pin = href + currentNodeAttribute;
 		}
 		
 		else {
