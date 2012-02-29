@@ -6,7 +6,7 @@ After installing Pinpoint (download and double click on the .safariextz file), S
 
 To create your own pins, simply right click on any element on the page, and select "Create Pin" from the menu.
 
-Don't worry, people who don't have Pinpoint installed will still be able to use your pinss; they'll just work like a normal link.
+Don't worry, people who don't have Pinpoint installed will still be able to use your pins; they'll just work like a normal link.
 
 ## Settings
 ### Highlighting
